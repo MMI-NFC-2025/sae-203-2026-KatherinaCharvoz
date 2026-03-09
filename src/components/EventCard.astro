@@ -1,0 +1,24 @@
+---
+const { event } = Astro.props;
+---
+
+{
+    events.map((event) => (
+        <ul>
+            <li>{event.title} - {event.date}</li>
+        </ul>
+    ))
+}
+
+
+<div
+    class="border border-gray-200 rounded-lg p-6 shadow-md hover:shadow-lg hover:-translate-y-1 transition-all cursor-pointer"
+>
+    <div class="flex items-center gap-2 mb-2">
+        <strong class="text-lg">{event.title}</strong>
+    </div>
+    <p class="text-gray-600 text-sm mb-4">{event.date}</p>
+    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm transition-colors">
+        Favori
+    </button>
+</div>

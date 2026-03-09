@@ -1,5 +1,8 @@
 ---
 import '../styles/global.css';
+
+const { title } = Astro.props;
+import Nav from "../components/Nav.astro";
 ---
 
 <!doctype html>
@@ -11,10 +14,26 @@ import '../styles/global.css';
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
 		<title>Astro Basics</title>
-	</head>
-	<body>
+
 		<slot />
-	</body>
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>{title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+
+  <body>
+    <header>
+      <Nav />
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer>
+      <p>© 2026 - Festival</p>
+    </footer>
+  </body>
 </html>
-
-
