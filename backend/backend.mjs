@@ -1,5 +1,5 @@
 import PocketBase from "pocketbase";
-const pb = new PocketBase("http://127.0.0.1:8090/_/#/collections?collection=_pb_users_auth_&filter=&sort=-%40rowid");
+export const pb = new PocketBase("http://127.0.0.1:8090/_/#/collections?collection=_pb_users_auth_&filter=&sort=-%40rowid");
 
 export async function getArtistesByDate() {
   return await pb.collection('artistes').getFullList({

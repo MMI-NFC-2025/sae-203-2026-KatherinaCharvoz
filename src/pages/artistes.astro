@@ -1,0 +1,22 @@
+---
+import Layout from "../layouts/Layout.astro";
+import {getArtistesAlpha, pb} from "../../backend/backend.mjs";
+
+const artistes = await getArtistesAlpha();
+console.log(artistes);
+
+---
+
+
+    <div class="artistes-list">
+		{artistes.map((artiste) => (
+			<li>
+				<h2>{artiste.nom}</h2>
+				<img
+					src={pb.files.getURL(artiste, artiste.image)}
+					alt={artiste.nom}
+					width="200"
+				/>
+			</li>
+		))}
+	</div>

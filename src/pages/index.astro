@@ -1,10 +1,38 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import {getArtistesAlpha, pb} from "../../backend/backend.mjs";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const artistes = await getArtistesAlpha();
+console.log(artistes);
+
 ---
 
-<Layout>
-	<h1>Welcome to Astro!</h1>
+<Layout title="Accueil">
+	<section class="hero">
+		<p>Première Edition : Rythmes du Monde</p>
+		<h1>Flying Tap Fest</h1>
+		<p>Un festival entre ciel et terre</p>
+		<p>Du 106 au 07 juin 2026</p>
+		<p>Près-la-Rose à Montbéliard</p>
+		<a href="/festival" class="btn">Réserver vos billets</a>
+	</section>
+
+
 </Layout>
+
+<style>
+	.hero {
+		text-align: center;
+		padding: 2rem 2rem;
+	}
+	.btn {
+		display: inline-block;
+		margin-top: 1rem;
+		padding: 0.75rem 1.5rem;
+		background-color: #a00c0c;
+		color: white;
+		text-decoration: none;
+		border-radius: 4px;
+		transition: background-color 0.3s ease;
+	}
+</style>
