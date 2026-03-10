@@ -8,7 +8,18 @@ console.log(artistes);
 ---
 
 
-    <div class="artistes-list">
+<Layout title="Artistes">
+		<section>
+		<ul>
+			{
+				artistes.map((artiste) => (
+					<li key={artiste.id}>{artiste.name}</li>
+				))
+			}
+		</ul>
+	</section>
+	
+	<div class="artistes-list">
 		{artistes.map((artiste) => (
 			<li>
 				<h2>{artiste.nom}</h2>
@@ -20,3 +31,5 @@ console.log(artistes);
 			</li>
 		))}
 	</div>
+</Layout>
+    

@@ -1,10 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import {getArtistesAlpha, pb} from "../../backend/backend.mjs";
+import { getArtistesAlpha, pb } from "../../backend/backend.mjs";
 
 const artistes = await getArtistesAlpha();
 console.log(artistes);
-
 ---
 
 <Layout title="Accueil">
@@ -12,32 +11,282 @@ console.log(artistes);
 		<p>Première Edition : Rythmes du Monde</p>
 		<h1>Flying Tap Fest</h1>
 		<p>Un festival entre ciel et terre</p>
-		<p>Du 106 au 07 juin 2026</p>
+		<p>Du 06 au 07 juin 2026</p>
 		<p>Près-la-Rose à Montbéliard</p>
 		<a href="/festival" class="btn">Réserver vos billets</a>
 	</section>
-
-
-</Layout>
-
+	<section class="stats">
+		<p>100+</p>
+		<p>Drones pour le show</p>
+		<p>2</p>
+		<p>Jour de festival</p>
+		<p>1k+</p>
+		<p>Spectateurs</p>
+		<p>8+</p>
+		<p>Artistes sur scene</p>
+	</section>
+	<section class="explore">
+		<h2>Explorez le Festival</h2>
+		<p class="explore-sub">Découvrez tout ce que<br>le Flying Tap Fest a à offrir !</p>
+		<div class="explore-cards">
+			<div class="explore-card">
+				<img src="/public/drone_pageaccueil.jpg" alt="Drones" />
+				<div class="explore-card-content">
+					<h3>Drones</h3>
+					<p>Le spectacle de drones sera un moment magique où des centaines de lumières danseront dans le ciel...</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+			<div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<h3>Programme</h3>
+					<p>Découvrez notre programmation complète avec plus de 8 artistes sur 2 jours...</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+			<div class="explore-card">
+				<img src="/public/artistes_pageaccueil.jpg" alt="Artistes" />
+				<div class="explore-card-content">
+					<h3>Artistes</h3>
+					<p>Des légendes des claquettes aux jeunes prodiges, rencontrez tous nos artistes exceptionnels...</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+			<div class="explore-card">
+				<img src="/public/infos_pratiques_pageaccueil.jpg" alt="Infos Pratiques" />
+				<div class="explore-card-content">
+					<h3>Infos Pratiques</h3>
+					<p>Tarifs, accès, hébergement... Toutes les informations pour préparer votre venue au festival...</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+		</div>
+	<section class="partners">
+    <h2>Nos Partenaires</h2>
+    <div class="partners-slider">
+        <div class="partners-track">
+            <img src="/public/partenaires_logo/decathlon_partenaire.jpeg" alt="Decathlon" />
+            <img src="/public/partenaires_logo/Pays_de_Montbeliard_partenaire.png" alt="Pays de Montbéliard" />
+            <img src="/public/partenaires_logo/moloco-logo_partenaire.png" alt="Le Moloco" />
+            
+            <img src="/public/partenaires_logo/decathlon_partenaire.jpeg" alt="Decathlon" />
+            <img src="/public/partenaires_logo/Pays_de_Montbeliard_partenaire.png" alt="Pays de Montbéliard" />
+            <img src="/public/partenaires_logo/moloco-logo_partenaire.png" alt="Le Moloco" />
+        </div>
+    </div>
+	<section>
+		<h2>Prêt à vivre l'expérience?</h2>
+		<p>Ne manquez pas l'évènement incontournable de l'été 2026</p>
+		<a href="/festival" class="btn">Réserver maintenant</a>
+	</section>
+	<section class="footer">
+		<h3>Flying Tap Fest</h3>
+		<p>Le festival de claquettes qui fait vibrer Montbéliard chaque été. Une célébration de la danse, du rythme et de la culture tap.</p>
+		<h3>Liens Rapides</h3>
+		<ul>
+			<li><a href="/festival">Le Festival</a></li>
+			<li><a href="/programme">Programme</a></li>
+			<li><a href="/artistes">Artistes</a></li>
+			<li><a href="/infos-pratiques">Infos Pratiques</a></li>
+			<li><a href="/contact">Contact</a></li>
+		</ul>
+		<h3>Suivez-nous</h3>
+		<a href="https://www.facebook.com/flyingtapfest" target="_blank">Facebook</a> |
+		<a href="https://www.youtube.com/flyingtapfest" target="_blank">YouTube</a> |
+		<a href="https://www.twitter.com/flyingtapfest" target="_blank">Twitter</a>
+		<a href="https://www.instagram.com/flyingtapfest" target="_blank">Instagram</a>
+		<p>&copy; 2026 Flying Tap Fest. Tous droits réservés.</p>
+		<p>Contact: <a href="mailto:info@flyingtapfest.com">info@flyingtapfest.com</a></p>
+	</section>
 <style>
 	.hero {
-		text-align: center;
-		padding: 2rem 2rem;
-		background-image: url('/public/');
-		background-size: 100% auto;
-		background-position: center bottom;
-		background-repeat: no-repeat;
-		min-height: 800px;
-	}
-	.btn {
-		display: inline-block;
-		margin-top: 1rem;
-		padding: 0.75rem 1.5rem;
-		background-color: #a00c0c;
-		color: white;
-		text-decoration: none;
-		border-radius: 4px;
-		transition: background-color 0.3s ease;
-	}
-</style>
+			text-align: center;
+			padding: 2rem 2rem;
+			text-emphasis-color: #;
+			background-image: url("/public/hero_image_tap_dancer.jpg");
+			background-size: 100% auto;
+			background-repeat: no-repeat;
+			min-height: 900px;
+			color: white;
+			font-family: "Ag Body", serif;
+		}
+		.btn {
+			display: inline-block;
+			margin-top: 1rem;
+			padding: 0.75rem 1.5rem;
+			background-color: #a00c0c;
+			color: white;
+			text-decoration: none;
+			border-radius: 4px;
+			transition: background-color 0.3s ease;
+		}
+		.hero p {
+			background: rgba(40, 40, 40, 0.7);
+			border-radius: 2rem;
+			padding: 0.5rem 1.5rem;
+			margin: 1rem auto;
+			width: fit-content;
+			font-size: 1.1rem;
+			font-family: "Ag Body", serif;
+		}
+		.hero h1 {
+			font-family: "Ag Body", serif;
+			font-size: 3rem;
+			font-weight: bold;
+			background: rgba(40, 40, 40, 0.7);
+			border-radius: 2rem;
+			padding: 0.5rem 2rem;
+			margin: 1rem auto;
+			width: fit-content;
+		}
+		.stats {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			grid-template-rows: repeat(2, 1fr);
+			gap: 2rem;
+			background: #f5f1eb;
+			padding: 3rem 0;
+			max-width: 900px;
+			margin: 0 auto;
+			border-radius: 2rem;
+			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+		}
+		.stats p {
+			margin: 0;
+			text-align: center;
+			font-family: "Ag Body", serif;
+		}
+		.stats p:nth-child(1),
+		.stats p:nth-child(3),
+		.stats p:nth-child(5),
+		.stats p:nth-child(7) {
+			font-size: 2.5rem;
+			font-weight: bold;
+			color: #a00c0c;
+		}
+		.stats p:nth-child(2),
+		.stats p:nth-child(4),
+		.stats p:nth-child(6),
+		.stats p:nth-child(8) {
+			font-size: 1.1rem;
+			color: #222;
+		}
+		@media (min-width: 900px) {
+			.stats {
+				padding: 4rem 0;
+				gap: 3rem;
+			}
+			.stats p:nth-child(1),
+			.stats p:nth-child(3),
+			.stats p:nth-child(5),
+			.stats p:nth-child(7) {
+				font-size: 3rem;
+			}
+			.stats p:nth-child(2),
+			.stats p:nth-child(4),
+			.stats p:nth-child(6),
+			.stats p:nth-child(8) {
+				font-size: 1.2rem;
+			}
+		}
+		.explore {
+			background: #b3ae9a;
+			padding: 2.5rem 0 3rem 0;
+			text-align: center;
+		}
+		.explore h2 {
+			font-family: 'Ag Body', serif;
+			font-size: 2.5rem;
+			font-weight: bold;
+			margin-bottom: 0.5rem;
+		}
+		.explore-sub {
+			font-family: 'Ag Body', serif;
+			font-size: 1.2rem;
+			font-weight: 600;
+			margin-bottom: 2rem;
+		}
+		.explore-cards {
+			display: flex;
+			flex-direction: column;
+			gap: 2rem;
+			align-items: center;
+		}
+		.explore-card {
+			background: #f5f1eb;
+			border-radius: 1.5rem;
+			box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+			overflow: hidden;
+			max-width: 350px;
+			width: 100%;
+			text-align: left;
+		}
+		.explore-card img {
+			width: 100%;
+			height: 140px;
+			object-fit: cover;
+			border-top-left-radius: 1.5rem;
+			border-top-right-radius: 1.5rem;
+		}
+		.explore-card-content {
+			padding: 1.2rem 1.5rem 1.5rem 1.5rem;
+		}
+		.explore-card-content h3 {
+			font-family: 'Ag Body', serif;
+			font-size: 1.3rem;
+			font-weight: bold;
+			margin-bottom: 0.5rem;
+		}
+		.explore-card-content p {
+			font-family: 'Ag Body', serif;
+			font-size: 1rem;
+			margin-bottom: 1rem;
+		}
+		.explore-link {
+			color: #a00c0c;
+			font-weight: bold;
+			text-decoration: none;
+			font-family: 'Ag Body', serif;
+			font-size: 1.05rem;
+		}
+		@media (min-width: 900px) {
+			.explore-cards {
+				flex-direction: row;
+				justify-content: center;
+				gap: 2.5rem;
+			}
+			.explore-card {
+				max-width: 320px;
+			}
+		}
+		.partners {
+			margin: 2rem 0;
+			text-align: center;
+			background-color: #f9f9f9;
+			padding: 1rem 0;
+		}
+		.partners-slider {
+			overflow: hidden;
+			position: relative;
+			white-space: nowrap;
+		}
+		.partners-track {
+			display: flex;
+			animation: scroll 10s linear infinite;
+		}
+		.partners-track img {
+			height: 100px;
+			margin: 0 1rem;
+			object-fit: contain;
+		}
+		@keyframes scroll {
+			0% {
+				transform: translateX(0);
+			}
+			100% {
+				transform: translateX(-50%);
+			}
+		}
+	</style>
+</Layout>
