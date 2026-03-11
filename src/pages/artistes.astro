@@ -1,15 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import {getArtistesAlpha, pb} from "../../backend/backend.mjs";
+import Header from "../components/Header.astro";
+import { getArtistesAlpha, pb } from "../../backend/backend.mjs";
 
 const artistes = await getArtistesAlpha();
 console.log(artistes);
-
 ---
 
-
 <Layout title="Artistes">
-		<section>
+	<Header
+		title="Nos Artistes"
+		subtitle="Rencontrez les professionnels du tap"
+		showEvents={false}
+	/>
+	<section>
 		<ul>
 			{
 				artistes.map((artiste) => (
@@ -18,22 +22,27 @@ console.log(artistes);
 			}
 		</ul>
 	</section>
-	
+
 	<div class="artistes-list">
-		{artistes.map((artiste) => (
-			<li>
-				<h2>{artiste.nom}</h2>
-				<img
-					src={pb.files.getURL(artiste, artiste.image)}
-					alt={artiste.nom}
-					width="200"
-				/>
-			</li>
-		))}
+		{
+			artistes.map((artiste) => (
+				<li>
+					<h2>{artiste.nom}</h2>
+					<img
+						src={pb.files.getURL(artiste, artiste.image)}
+						alt={artiste.nom}
+						width="200"
+					/>
+				</li>
+			))
+		}
 	</div>
 	<section class="footer">
 		<h3>Flying Tap Fest</h3>
-		<p>Le festival de claquettes qui fait vibrer Montbéliard chaque été. Une célébration de la danse, du rythme et de la culture tap.</p>
+		<p>
+			Le festival de claquettes qui fait vibrer Montbéliard chaque été.
+			Une célébration de la danse, du rythme et de la culture tap.
+		</p>
 		<h3>Liens Rapides</h3>
 		<ul>
 			<li><a href="/festival">Le Festival</a></li>
@@ -43,12 +52,22 @@ console.log(artistes);
 			<li><a href="/contact">Contact</a></li>
 		</ul>
 		<h3>Suivez-nous</h3>
-		<a href="https://www.facebook.com/flyingtapfest" target="_blank">Facebook</a> |
-		<a href="https://www.youtube.com/flyingtapfest" target="_blank">YouTube</a> |
-		<a href="https://www.twitter.com/flyingtapfest" target="_blank">Twitter</a>
-		<a href="https://www.instagram.com/flyingtapfest" target="_blank">Instagram</a>
+		<a href="https://www.facebook.com/flyingtapfest" target="_blank"
+			>Facebook</a
+		> |
+		<a href="https://www.youtube.com/flyingtapfest" target="_blank"
+			>YouTube</a
+		> |
+		<a href="https://www.twitter.com/flyingtapfest" target="_blank"
+			>Twitter</a
+		>
+		<a href="https://www.instagram.com/flyingtapfest" target="_blank"
+			>Instagram</a
+		>
 		<p>&copy; 2026 Flying Tap Fest. Tous droits réservés.</p>
-		<p>Contact: <a href="mailto:info@flyingtapfest.com">info@flyingtapfest.com</a></p>
+		<p>
+			Contact: <a href="mailto:info@flyingtapfest.com"
+				>info@flyingtapfest.com</a>
+		</p>
 	</section>
 </Layout>
-    

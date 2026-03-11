@@ -1,20 +1,28 @@
+---
+interface Props {
+    title?: string;
+    subtitle?: string;
+    showEvents?: boolean;
+}
+
+const { title = "Flying Tap Fest 2026", subtitle = "Programmation en direct", showEvents = true } = Astro.props;
+---
+
 <header class="festival-header">
     <div class="header-content">
-        <img
-            src="/public/logo_chaussure.svg"
-            alt="Logo chaussure"
-            class="header-logo"
-        />
-        <h1>Flying Tap Fest 2026</h1>
-        <p class="header-subtitle">Programmation en direct</p>
+        <img src="/public/logo_chaussure.svg" alt="Logo chaussure" class="header-logo" />
+        <h1>{title}</h1>
+        <p class="header-subtitle">{subtitle}</p>
     </div>
 </header>
 
-<section class="events-section">
-    <div class="events-container" id="eventsContainer">
-        <!-- Les événements seront chargés dynamiquement ici -->
-    </div>
-</section>
+{showEvents && (
+    <section class="events-section">
+        <div class="events-container" id="eventsContainer">
+            <!-- Les événements seront chargés dynamiquement ici -->
+        </div>
+    </section>
+)}
 
 <style>
     .festival-header {
@@ -151,6 +159,7 @@
 
     async function loadEvents() {
         const container = document.getElementById("eventsContainer");
+        if (!container) return;
 
         try {
             container.innerHTML =
