@@ -1,12 +1,185 @@
-const events = [
-    {
-        title: "Conférence sur les astres",
-        date: "Lundi 12 Juillet",
-        favori: true,
-    },
-    {
-        title: "Atelier sur les étoiles",
-        date: "Mardi 13 Juillet",
-        favori: false,
-    },
-];
+<header class="festival-header">
+    <div class="header-content">
+        <h1>Flying Tap Fest 2026</h1>
+        <p class="header-subtitle">Programmation en direct</p>
+    </div>
+</header>
+
+<section class="events-section">
+    <div class="events-container" id="eventsContainer">
+        <!-- Les événements seront chargés dynamiquement ici -->
+    </div>
+</section>
+
+<style>
+    .festival-header {
+        background: linear-gradient(135deg, #872c1f 0%, #c9963a 100%);
+        color: white;
+        padding: 3rem 2rem;
+        text-align: center;
+        font-family: "Ag Body", serif;
+    }
+
+    .festival-header h1 {
+        font-size: 2.5rem;
+        margin: 0;
+        font-weight: bold;
+    }
+
+    .header-subtitle {
+        font-size: 1.2rem;
+        margin: 0.5rem 0 0 0;
+        opacity: 0.9;
+    }
+
+    @media (min-width: 1024px) {
+        .festival-header {
+            padding: 4rem 2rem;
+        }
+        .festival-header h1 {
+            font-size: 3.2rem;
+        }
+        .header-subtitle {
+            font-size: 1.4rem;
+        }
+    }
+
+    .events-section {
+        padding: 2.5rem 2rem;
+        background-color: #f7f2eb;
+        font-family: "Ag Body", serif;
+    }
+
+    .events-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        gap: 1.5rem;
+    }
+
+    .event-item {
+        background: white;
+        border-left: 4px solid #872c1f;
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .event-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-info h3 {
+        margin: 0 0 0.5rem 0;
+        font-size: 1.2rem;
+        color: #1a1008;
+    }
+
+    .event-date {
+        color: #666;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .event-favorite {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        padding: 0.5rem;
+        transition: transform 0.2s ease;
+    }
+
+    .event-favorite:hover {
+        transform: scale(1.1);
+    }
+
+    .event-favorite.favorited {
+        color: #c9963a;
+    }
+
+    .events-loading {
+        text-align: center;
+        color: #666;
+        padding: 2rem;
+    }
+
+    .events-error {
+        text-align: center;
+        color: #872c1f;
+        padding: 2rem;
+        background: white;
+        border-radius: 0.5rem;
+        border-left: 4px solid #872c1f;
+    }
+
+    .no-events {
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 0.5rem;
+        color: #666;
+    }
+</style>
+
+<script>
+    const PB_URL = 'http://localhost:8090';
+
+    async function loadEvents() {
+        const container = document.getElementById('eventsContainer');
+        
+        try {
+            container.innerHTML = '<div class="events-loading">Chargement des événements...</div>';
+            
+            const response = await fetch(`${PB_URL}/api/collections/scenes/records?sort=nom_scene&perPage=10`);
+            
+            if (!response.ok) {
+                throw new Error('Erreur lors du chargement des événements');
+            }
+
+            const data = await response.json();
+            const events = data.items;
+
+            if (!events || events.length === 0) {
+                container.innerHTML = '<div class="no-events">Aucun événement disponible pour le moment.</div>';
+                return;
+            }
+
+            // Créer les éléments d'événement
+            const eventsHTML = events.map(event => `
+                <div class="event-item">
+                    <div class="event-info">
+                        <h3>${event.nom_scene || 'Événement sans titre'}</h3>
+                        <p class="event-date">${event.date_scene || 'Date non spécifiée'}</p>
+                    </div>
+                    <button class="event-favorite" data-id="${event.id}" aria-label="Ajouter aux favoris">
+                        ☆
+                    </button>
+                </div>
+            `).join('');
+
+            container.innerHTML = eventsHTML;
+
+            // Ajouter les écouteurs pour les favoris
+            document.querySelectorAll('.event-favorite').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.target.classList.toggle('favorited');
+                    e.target.textContent = e.target.classList.contains('favorited') ? '★' : '☆';
+                });
+            });
+
+            console.log('Événements chargés:', events);
+        } catch (error) {
+            console.error('Erreur lors du chargement des événements:', error);
+            container.innerHTML = '<div class="events-error">Erreur lors du chargement des événements. Veuillez réessayer.</div>';
+        }
+    }
+
+    // Charger les événements au chargement de la page
+    document.addEventListener('DOMContentLoaded', loadEvents);
+</script>
