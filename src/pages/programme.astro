@@ -1,0 +1,125 @@
+---
+import Layout from '../../src/layouts/Layout.astro';
+const { programme } = Astro.props;
+---
+
+<div class="card">
+  <img src={programme.image} alt={programme.nom} />
+
+  <div class="info">
+    <h3>{programme.nom}</h3>
+    <p class="titre">"{programme.titre}"</p>
+    <p class="horaire">{programme.horaire}</p>
+    <p class="lieu">{programme.lieu}</p>
+  </div>
+</div>
+<section>
+    <h1>Programme</h1>
+    <a href="/" class="btn">Télécharger le programme en PDF</a>
+
+</section>
+<section>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<h2>06 Juin</h2>
+					<p>Milo Everstep</p>
+                    <p>Jeune Talent</p>
+                    <p>Horaire : 14:00</p>
+                    <p>Scène : Scène Découverte</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<p>Clara "Silver Shoes" Delmare</p>
+                    <p>Comédie Tap</p>
+                    <p>Horaire : 16:00</p>
+                    <p>Scène : Grande Scène</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<p>Jaden Hartwell</p>
+                    <p>Soul Tap</p>
+                    <p>Horaire : 18:30</p>
+                    <p>Scène : Scène Découverte</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<p>Tessa Marlowe</p>
+                    <p>Tap Jazz</p>
+                    <p>Horaire : 20:00</p>
+                    <p>Scène : Grande Scène</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+</section>
+<section>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<h2>07 Juin</h2>
+					<p>Elián Cortez</p>
+                    <p>Soul Tap</p>
+                    <p>Horaire : 16:00</p>
+                    <p>Scène : Scène Découverte</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<p>Theo Copperlane</p>
+                    <p>Flamenco Tap</p>
+                    <p>Horaire : 17:30</p>
+                    <p>Scène : Grande Scène</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<p>Damian Quickfoot</p>
+                    <p>Hip-Hop Tap</p>
+                    <p>Horaire : 19:00</p>
+                    <p>Scène : Scène Découverte</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+    <div class="explore-card">
+				<img src="/public/programme_pageaccueil.jpg" alt="Programme" />
+				<div class="explore-card-content">
+					<p>Harper Drayton</p>
+                    <p>Irish Tap</p>
+                    <p>Horaire : 20:30</p>
+                    <p>Scène : Grande Scène</p>
+					<a href="/festival" class="explore-link">Plus d'information <span>&#8594;</span></a>
+				</div>
+			</div>
+</section>
+
+
+<style>
+  .card {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #333;
+  }
+  img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+  }
+  .titre {
+    font-style: italic;
+    opacity: 0.8;
+  }
+</style>
