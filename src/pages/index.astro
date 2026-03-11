@@ -16,14 +16,22 @@ console.log(artistes);
 		<a href="/festival" class="btn">Réserver vos billets</a>
 	</section>
 	<section class="stats">
-		<p>100+</p>
-		<p>Drones pour le show</p>
-		<p>2</p>
-		<p>Jour de festival</p>
-		<p>1k+</p>
-		<p>Spectateurs</p>
-		<p>8+</p>
-		<p>Artistes sur scene</p>
+		<article class="stat-item">
+			<p class="stat-value">100+</p>
+			<p class="stat-label">Drones pour le show</p>
+		</article>
+		<article class="stat-item">
+			<p class="stat-value">2</p>
+			<p class="stat-label">Jours de festival</p>
+		</article>
+		<article class="stat-item">
+			<p class="stat-value">1k</p>
+			<p class="stat-label">Spectateurs</p>
+		</article>
+		<article class="stat-item">
+			<p class="stat-value">8+</p>
+			<p class="stat-label">Artistes sur scene</p>
+		</article>
 	</section>
 	<section class="explore">
 		<h2>Explorez le Festival</h2>
@@ -62,6 +70,8 @@ console.log(artistes);
 				</div>
 			</div>
 		</div>
+	</section>
+
 	<section class="partners">
     <h2>Nos Partenaires</h2>
     <div class="partners-slider">
@@ -75,29 +85,12 @@ console.log(artistes);
             <img src="/public/partenaires_logo/moloco-logo_partenaire.png" alt="Le Moloco" />
         </div>
     </div>
-	<section>
+	</section>
+
+	<section class="cta">
 		<h2>Prêt à vivre l'expérience?</h2>
 		<p>Ne manquez pas l'évènement incontournable de l'été 2026</p>
 		<a href="/festival" class="btn">Réserver maintenant</a>
-	</section>
-	<section class="footer">
-		<h3>Flying Tap Fest</h3>
-		<p>Le festival de claquettes qui fait vibrer Montbéliard chaque été. Une célébration de la danse, du rythme et de la culture tap.</p>
-		<h3>Liens Rapides</h3>
-		<ul>
-			<li><a href="/festival">Le Festival</a></li>
-			<li><a href="/programme">Programme</a></li>
-			<li><a href="/artistes">Artistes</a></li>
-			<li><a href="/infos-pratiques">Infos Pratiques</a></li>
-			<li><a href="/contact">Contact</a></li>
-		</ul>
-		<h3>Suivez-nous</h3>
-		<a href="https://www.facebook.com/flyingtapfest" target="_blank">Facebook</a> |
-		<a href="https://www.youtube.com/flyingtapfest" target="_blank">YouTube</a> |
-		<a href="https://www.twitter.com/flyingtapfest" target="_blank">Twitter</a>
-		<a href="https://www.instagram.com/flyingtapfest" target="_blank">Instagram</a>
-		<p>&copy; 2026 Flying Tap Fest. Tous droits réservés.</p>
-		<p>Contact: <a href="mailto:info@flyingtapfest.com">info@flyingtapfest.com</a></p>
 	</section>
 <style>
 	.hero {
@@ -143,51 +136,43 @@ console.log(artistes);
 		.stats {
 			display: grid;
 			grid-template-columns: repeat(2, 1fr);
-			grid-template-rows: repeat(2, 1fr);
-			gap: 2rem;
-			background: #f5f1eb;
-			padding: 3rem 0;
-			max-width: 900px;
+			gap: 3.2rem 2.2rem;
+			background: #ebe8e1;
+			padding: 3.2rem 2rem;
+			max-width: 760px;
 			margin: 0 auto;
-			border-radius: 2rem;
-			box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+			border: 1px solid #d8d4cb;
+			border-radius: 1.8rem;
 		}
-		.stats p {
-			margin: 0;
+		.stat-item {
 			text-align: center;
+		}
+		.stat-value {
+			margin: 0;
+			line-height: 1;
 			font-family: "Ag Body", serif;
+			font-size: 4rem;
+			font-weight: 700;
+			color: #842f22;
 		}
-		.stats p:nth-child(1),
-		.stats p:nth-child(3),
-		.stats p:nth-child(5),
-		.stats p:nth-child(7) {
-			font-size: 2.5rem;
-			font-weight: bold;
-			color: #a00c0c;
-		}
-		.stats p:nth-child(2),
-		.stats p:nth-child(4),
-		.stats p:nth-child(6),
-		.stats p:nth-child(8) {
-			font-size: 1.1rem;
-			color: #222;
+		.stat-label {
+			margin: 0.45rem 0 0;
+			font-family: "Ag Body", serif;
+			font-size: 1.9rem;
+			line-height: 1.2;
+			color: #1f1b18;
 		}
 		@media (min-width: 900px) {
 			.stats {
-				padding: 4rem 0;
-				gap: 3rem;
+				max-width: 940px;
+				padding: 4.8rem 3.8rem;
+				gap: 4.6rem 4rem;
 			}
-			.stats p:nth-child(1),
-			.stats p:nth-child(3),
-			.stats p:nth-child(5),
-			.stats p:nth-child(7) {
-				font-size: 3rem;
+			.stat-value {
+				font-size: 4.6rem;
 			}
-			.stats p:nth-child(2),
-			.stats p:nth-child(4),
-			.stats p:nth-child(6),
-			.stats p:nth-child(8) {
-				font-size: 1.2rem;
+			.stat-label {
+				font-size: 2.1rem;
 			}
 		}
 		.explore {
@@ -260,6 +245,85 @@ console.log(artistes);
 				max-width: 320px;
 			}
 		}
+		@media (min-width: 1024px) {
+			.hero {
+				min-height: 780px;
+				padding: 4.5rem 2rem;
+				background-size: cover;
+				background-position: center 10%;
+			}
+			.hero h1 {
+				font-size: 4.2rem;
+				padding: 0.6rem 2.6rem;
+			}
+			.hero p {
+				font-size: 1.25rem;
+			}
+			.hero .btn {
+				padding: 0.9rem 2.2rem;
+				border-radius: 999px;
+				font-size: 1.05rem;
+			}
+
+			.stats {
+				max-width: 940px;
+				padding: 4.8rem 3.8rem;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 4.6rem 4rem;
+				margin-top: -7rem;
+				margin-bottom: 3rem;
+				position: relative;
+				z-index: 2;
+			}
+
+			.explore {
+				padding: 3.5rem 2rem 4rem;
+			}
+			.explore h2 {
+				font-size: 3.1rem;
+			}
+			.explore-sub {
+				font-size: 1.35rem;
+				margin-bottom: 2.5rem;
+			}
+			.explore-cards {
+				display: grid;
+				grid-template-columns: repeat(4, minmax(220px, 1fr));
+				gap: 1.4rem;
+				max-width: 1260px;
+				margin: 0 auto;
+				align-items: stretch;
+			}
+			.explore-card {
+				max-width: none;
+			}
+			.explore-card img {
+				height: 170px;
+			}
+
+			.partners {
+				margin: 0;
+				padding: 1.8rem 0;
+			}
+			.partners h2 {
+				font-size: 2rem;
+				margin-bottom: 1rem;
+			}
+			.partners-track img {
+				height: 120px;
+				margin: 0 2rem;
+			}
+
+			.cta {
+				padding: 4.4rem 1rem;
+			}
+			.cta h2 {
+				font-size: 2.6rem;
+			}
+			.cta p {
+				font-size: 1.2rem;
+			}
+		}
 		.partners {
 			margin: 2rem 0;
 			text-align: center;
@@ -287,6 +351,26 @@ console.log(artistes);
 			100% {
 				transform: translateX(-50%);
 			}
+		}
+		.cta {
+			text-align: center;
+			padding: 3.5rem 1rem;
+			background: linear-gradient(180deg, #f7f2eb 0%, #ead8bf 100%);
+			border-top: 1px solid rgba(0, 0, 0, 0.06);
+			border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+		}
+		.cta h2 {
+			font-family: "Ag Body", serif;
+			font-size: 2rem;
+			margin-bottom: 0.5rem;
+		}
+		.cta p {
+			font-size: 1.1rem;
+			margin-bottom: 1rem;
+		}
+		.cta .btn {
+			padding: 0.85rem 2rem;
+			border-radius: 999px;
 		}
 	</style>
 </Layout>

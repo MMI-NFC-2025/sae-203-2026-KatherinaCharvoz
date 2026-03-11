@@ -2,7 +2,8 @@
 import "../styles/global.css";
 
 const { title } = Astro.props;
-import Nav from "../components/Nav.astro";
+import Nav from "../components/nav.astro";
+import Footer from "../components/footer.astro";
 ---
 
 <!doctype html>
@@ -25,8 +26,6 @@ import Nav from "../components/Nav.astro";
       <slot />
     </main>
 
-    <footer>
-      <p>© 2026 - Festival</p>
-    </footer>
+    <Footer />
   </body>
 </html>

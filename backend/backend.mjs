@@ -1,10 +1,23 @@
 import PocketBase from "pocketbase";
 export const pb = new PocketBase("http://127.0.0.1:8090");
 
-export async function getArtistesByDate() {
-  return await pb.collection('artistes').getFullList({
-    sort: 'dateRepresentation'
-  });
+async function getFullListWithSortFallback(collectionName, sortCandidates, options = {}) {
+  for (const sortField of sortCandidates) {
+    try {
+      return await pb.collection(collectionName).getFullList({
+        ...options,
+        sort: sortField,
+      });
+    } catch (error) {
+      // PocketBase returns 400 when sort field does not exist.
+      if (error?.status !== 400) {
+        throw error;
+      }
+    }
+  }
+
+  // Last fallback: request without sort to avoid blocking page rendering.
+  return await pb.collection(collectionName).getFullList(options);
 }
 
 export async function getArtistesByDate() {
@@ -14,15 +27,19 @@ export async function getArtistesByDate() {
 }
 
 export async function getScenesByName() {
-  return await pb.collection('scenes').getFullList({
-    sort: 'nom'
-  });
+  return await getFullListWithSortFallback('scenes', [
+    'nom',
+    'nom_prenom_pseudo_artiste',
+    'name',
+  ]);
 }
 
 export async function getArtistesAlpha() {
-  return await pb.collection('artistes').getFullList({
-    sort: 'nom'
-  });
+  return await getFullListWithSortFallback('artistes', [
+    'nom',
+    'nom_prenom_pseudo_artiste',
+    'name',
+  ]);
 }
 
 export async function getArtisteById(id) {
