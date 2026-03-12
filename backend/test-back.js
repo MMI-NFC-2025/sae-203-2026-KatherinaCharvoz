@@ -32,8 +32,7 @@ async function runTests() {
     ok(`${res.length} scène(s) trouvée(s)`);
     if (res[0]) {
       sceneId = res[0].id;
-      // Le champ nom de la scène s'appelle "scene" dans PocketBase
-      console.log(`    → première : "${res[0].scene ?? res[0].nom ?? res[0].name}" (id: ${sceneId})`);
+      console.log(`    → première : "${res[0].nom_scene ?? res[0].scene ?? res[0].nom ?? res[0].name}" (id: ${sceneId})`);
     }
   } catch (e) { fail('getScenesByName', e); }
 
@@ -64,7 +63,7 @@ async function runTests() {
   if (sceneId) {
     try {
       const res = await getSceneById(sceneId);
-      ok(`scène récupérée : "${res.scene ?? res.nom ?? res.name}"`);
+      ok(`scène récupérée : "${res.nom_scene ?? res.scene ?? res.nom ?? res.name}"`);
     } catch (e) { fail(`getSceneById(${sceneId})`, e); }
   } else {
     console.log('  ⚠️  Aucune scène disponible, test ignoré');

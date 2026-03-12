@@ -1,28 +1,145 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+import {
+    getArtistesAlpha,
+    getScenesByName,
+    pb,
+} from "../../backend/backend.mjs";
+
+const artistes = await getArtistesAlpha();
+const scenes = await getScenesByName();
+const fallbackImages = [
+    "/programme_pageaccueil.jpg",
+    "/artistes_pageaccueil.jpg",
+    "/hero_image_tap_dancer.jpg",
+];
+
+const sceneArtistOrder = {
+    "scene decouverte": [
+        "j8nriyucmzjtkim",
+        "k3je02zet3l6omq",
+        "tvwnq35rr932rcr",
+        "iq6z8renidcpc7t",
+    ],
+    "grande scene": [
+        "x9be9qq8r4wrgml",
+        "5ddozlisgqo03jc",
+        "bw4hcnx9yz81hra",
+        "nm8abdkh6pknuw6",
+    ],
+};
+
+function normalizeSceneName(sceneName) {
+    return (sceneName || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+}
+
+function formatHour(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "--:--";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
+}
+
+function formatDayMonth(value) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Date à confirmer";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+        day: "2-digit",
+        month: "long",
+    }).format(date);
+}
+
+const artistsById = new Map(artistes.map((artist) => [artist.id, artist]));
+
+const slotsByScene = scenes.reduce((acc, slot) => {
+    const sceneName = slot.nom_scene || slot.scene || slot.nom || "";
+    const key = normalizeSceneName(sceneName);
+
+    if (!acc[key]) {
+        acc[key] = [];
+    }
+
+    acc[key].push(slot);
+    return acc;
+}, {});
+
+for (const key of Object.keys(slotsByScene)) {
+    slotsByScene[key].sort(
+        (leftSlot, rightSlot) =>
+            new Date(leftSlot.date_festival || 0).getTime() -
+            new Date(rightSlot.date_festival || 0).getTime(),
+    );
+}
+
+const programmeEvents = [];
+
+for (const [sceneKey, artistIds] of Object.entries(sceneArtistOrder)) {
+    const sceneSlots = slotsByScene[sceneKey] || [];
+
+    artistIds.forEach((artistId, index) => {
+        const artist = artistsById.get(artistId);
+        const slot = sceneSlots[index];
+
+        if (!artist || !slot) {
+            return;
+        }
+
+        const dateValue = slot.date_festival;
+        const photoField = artist.photo_artiste || artist.image;
+        const image = photoField
+            ? pb.files.getURL(artist, photoField)
+            : fallbackImages[index % fallbackImages.length];
+
+        programmeEvents.push({
+            id: artist.id,
+            name:
+                artist.nom_prenom_pseudo_artiste ||
+                artist.nom ||
+                artist.name ||
+                "Artiste",
+            genre: artist.type_de_festival || "Tap",
+            horaire: formatHour(dateValue),
+            scene: slot.nom_scene || slot.scene || artist.nom_scene || "Scène",
+            dateLabel: formatDayMonth(dateValue),
+            dateValue: new Date(dateValue || 0).getTime(),
+            image,
+        });
+    });
+}
+
+programmeEvents.sort(
+    (leftEvent, rightEvent) => leftEvent.dateValue - rightEvent.dateValue,
+);
+
+const uniqueGenres = Array.from(
+    new Set(programmeEvents.map((event) => event.genre)),
+);
+const uniqueHours = Array.from(
+    new Set(programmeEvents.map((event) => event.horaire)),
+);
+const uniqueScenes = Array.from(
+    new Set(programmeEvents.map((event) => event.scene)),
+);
 
 const filters = {
-    genres: [
-        "Tous les genres",
-        "Jeune Talent",
-        "Comédie Tap",
-        "Soul Tap",
-        "Tap Jazz",
-        "Flamenco Tap",
-        "Hip-Hop Tap",
-    ],
-    horaires: [
-        "Toutes les horaires",
-        "14:00",
-        "16:00",
-        "17:30",
-        "18:30",
-        "19:00",
-        "20:00",
-        "21:00",
-    ],
-    scenes: ["Toutes les scènes", "Scène Découverte", "Grande Scène"],
+    genres: ["Tous les genres", ...uniqueGenres],
+    horaires: ["Tous les horaires", ...uniqueHours],
+    scenes: ["Toutes les scènes", ...uniqueScenes],
 };
 ---
 
@@ -83,67 +200,26 @@ const filters = {
         </div>
 
         <div class="events-grid">
-            <article class="event-card">
-                <img src="/programme_pageaccueil.jpg" alt="Programme 06 Juin" />
-                <div class="event-content">
-                    <h3>06 Juin</h3>
-                    <p>Milo Everstep</p>
-                    <p>Jeune Talent</p>
-                    <p>Horaire : 14:00</p>
-                    <p>Scène : Scène Découverte</p>
-                    <a href="/festival" class="event-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </article>
-
-            <article class="event-card">
-                <img
-                    src="/programme_pageaccueil.jpg"
-                    alt="Programme Clara Delmare"
-                />
-                <div class="event-content">
-                    <p>Clara "Silver Shoes" Delmare</p>
-                    <p>Comédie Tap</p>
-                    <p>Horaire : 16:00</p>
-                    <p>Scène : Grande Scène</p>
-                    <a href="/festival" class="event-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </article>
-
-            <article class="event-card">
-                <img
-                    src="/programme_pageaccueil.jpg"
-                    alt="Programme Jaden Hartwell"
-                />
-                <div class="event-content">
-                    <p>Jaden Hartwell</p>
-                    <p>Soul Tap</p>
-                    <p>Horaire : 18:30</p>
-                    <p>Scène : Scène Découverte</p>
-                    <a href="/festival" class="event-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </article>
-
-            <article class="event-card">
-                <img
-                    src="/programme_pageaccueil.jpg"
-                    alt="Programme Tessa Marlowe"
-                />
-                <div class="event-content">
-                    <p>Tessa Marlowe</p>
-                    <p>Tap Jazz</p>
-                    <p>Horaire : 20:00</p>
-                    <p>Scène : Grande Scène</p>
-                    <a href="/festival" class="event-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </article>
+            {
+                programmeEvents.map((event) => (
+                    <article class="event-card">
+                        <img
+                            src={event.image}
+                            alt={`Programme ${event.name}`}
+                        />
+                        <div class="event-content">
+                            <h3>{event.dateLabel}</h3>
+                            <p>{event.name}</p>
+                            <p>{event.genre}</p>
+                            <p>Horaire : {event.horaire}</p>
+                            <p>Scène : {event.scene}</p>
+                            <a href={`/${event.id}`} class="event-link">
+                                Plus d'information <span>&#8594;</span>
+                            </a>
+                        </div>
+                    </article>
+                ))
+            }
         </div>
     </section>
 </Layout>
@@ -268,6 +344,7 @@ const filters = {
         color: #7d281b;
         font-family: "Ag Body", serif;
         font-size: 1.3rem;
+        font-weight: 800;
     }
 
     .event-content p {

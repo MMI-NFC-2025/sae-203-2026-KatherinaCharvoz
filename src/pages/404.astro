@@ -1,0 +1,92 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 - Page introuvable">
+    <section class="not-found-page">
+        <p class="error-code">404</p>
+        <h1>Page introuvable</h1>
+        <p class="error-text">
+            Oups... cette page n'existe pas ou a été déplacée.
+        </p>
+
+        <div class="actions">
+            <a href="/" class="primary-link">Retour à l'accueil</a>
+            <a href="/programme" class="secondary-link">Voir le programme</a>
+            <a href="/artistes" class="secondary-link">Découvrir les artistes</a
+            >
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .not-found-page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 3rem 1rem 3.5rem;
+        text-align: center;
+        font-family: "Ag Body", serif;
+    }
+
+    .error-code {
+        margin: 0;
+        color: #9a6f29;
+        font-size: clamp(4rem, 14vw, 7rem);
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .not-found-page h1 {
+        margin: 0.25rem 0 0.75rem;
+        color: #7a2018;
+        font-size: clamp(2rem, 7vw, 3.2rem);
+        line-height: 1.05;
+    }
+
+    .error-text {
+        margin: 0 auto 1.4rem;
+        max-width: 34ch;
+        color: #2c2722;
+        font-size: clamp(1rem, 3.4vw, 1.2rem);
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.7rem;
+    }
+
+    .actions a {
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 0.62rem 1.05rem;
+        font-size: 1rem;
+        transition:
+            transform 0.18s ease,
+            filter 0.18s ease;
+    }
+
+    .actions a:hover,
+    .actions a:focus-visible {
+        transform: translateY(-1px);
+        filter: brightness(1.04);
+    }
+
+    .primary-link {
+        background: #8b271b;
+        color: #f7efe3;
+    }
+
+    .secondary-link {
+        background: #e8dece;
+        color: #7a2018;
+        border: 1px solid #c6ae7f;
+    }
+
+    @media (min-width: 900px) {
+        .not-found-page {
+            padding: 4.2rem 1.3rem 4.8rem;
+        }
+    }
+</style>

@@ -1,8 +1,78 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { getArtistesAlpha, pb } from "../../backend/backend.mjs";
+import {
+	getArtistesAlpha,
+	getScenesByName,
+	pb,
+} from "../../backend/backend.mjs";
 
 const artistes = await getArtistesAlpha();
+const scenes = await getScenesByName();
+
+const sceneArtistOrder = {
+	"scène découverte": [
+		"j8nriyucmzjtkim",
+		"k3je02zet3l6omq",
+		"tvwnq35rr932rcr",
+		"iq6z8renidcpc7t",
+	],
+	"grande scène": [
+		"x9be9qq8r4wrgml",
+		"5ddozlisgqo03jc",
+		"bw4hcnx9yz81hra",
+		"nm8abdkh6pknuw6",
+	],
+};
+
+function normalizeSceneName(sceneName) {
+	return (sceneName || "").trim().toLowerCase();
+}
+
+function formatTimeLabel(value) {
+	const date = new Date(value);
+
+	if (Number.isNaN(date.getTime())) {
+		return "--:--";
+	}
+
+	return new Intl.DateTimeFormat("fr-FR", {
+		hour: "2-digit",
+		minute: "2-digit",
+	}).format(date);
+}
+
+const slotsByScene = scenes.reduce((acc, slot) => {
+	const sceneName = slot.nom_scene || slot.scene || slot.nom || "";
+	const key = normalizeSceneName(sceneName);
+
+	if (!acc[key]) {
+		acc[key] = [];
+	}
+
+	acc[key].push(slot.date_festival);
+	return acc;
+}, {});
+
+for (const key of Object.keys(slotsByScene)) {
+	slotsByScene[key].sort(
+		(leftValue, rightValue) =>
+			new Date(leftValue || 0).getTime() -
+			new Date(rightValue || 0).getTime(),
+	);
+}
+
+const preciseTimeByArtistId = {};
+
+for (const [sceneKey, artistIds] of Object.entries(sceneArtistOrder)) {
+	const slots = slotsByScene[sceneKey] || [];
+
+	artistIds.forEach((artistId, index) => {
+		const slotValue = slots[index];
+		if (slotValue) {
+			preciseTimeByArtistId[artistId] = formatTimeLabel(slotValue);
+		}
+	});
+}
 ---
 
 <Layout title="Artistes">
@@ -22,7 +92,11 @@ const artistes = await getArtistesAlpha();
 						artiste.name ||
 						"Artiste";
 					const genre = artiste.type_de_festival || "Tap";
-					const horaire = artiste.horaire || artiste.heure || "--:--";
+					const horaire =
+						preciseTimeByArtistId[artiste.id] ||
+						artiste.horaire ||
+						artiste.heure ||
+						"--:--";
 					const date =
 						artiste.dateRepresentation ||
 						artiste.date ||
