@@ -21,9 +21,13 @@ async function getFullListWithSortFallback(collectionName, sortCandidates, optio
 }
 
 export async function getArtistesByDate() {
-  return await pb.collection('artistes').getFullList({
-    sort: 'dateRepresentation'
-  });
+  // Les artistes n'ont pas de champ date propre ; on trie par nom_prenom_pseudo_artiste.
+  return await getFullListWithSortFallback('artistes', [
+    'dateRepresentation',
+    'date_representation',
+    'nom_prenom_pseudo_artiste',
+    'nom',
+  ]);
 }
 
 export async function getScenesByName() {
@@ -51,15 +55,22 @@ export async function getSceneById(id) {
 }
 
 export async function getArtistesBySceneId(sceneId) {
-  return await pb.collection('artistes').getFullList({
-    filter: `scene = "${sceneId}"`,
-    sort: 'dateRepresentation'
+  // Les artistes sont liés aux scènes par le champ texte nom_scene (pas par relation ID).
+  // On récupère d'abord le nom de la scène, puis on filtre les artistes.
+  const scene = await pb.collection('scenes').getOne(sceneId);
+  const sceneName = scene.scene ?? scene.nom ?? '';
+  return pb.collection('artistes').getFullList({
+    filter: `nom_scene = "${sceneName}"`,
+    sort: 'nom_prenom_pseudo_artiste',
   });
 }
 
 export async function getArtistesBySceneName(sceneName) {
-  const scene = await pb.collection('scenes').getFirstListItem(`nom = "${sceneName}"`);
-  return getArtistesBySceneId(scene.id);
+  // Filtre les artistes directement par leur champ nom_scene.
+  return pb.collection('artistes').getFullList({
+    filter: `nom_scene = "${sceneName}"`,
+    sort: 'nom_prenom_pseudo_artiste',
+  });
 }
 
 export async function saveArtiste(data, id = null) {
