@@ -5,6 +5,7 @@ import {
     getScenesByName,
     pb,
 } from "../../../backend/backend.mjs";
+import { artistScheduleById } from "../../data/artistSchedule";
 
 type SceneRecord = {
     image_scene?: string;
@@ -36,6 +37,12 @@ type ScheduledArtist = {
 };
 
 const sceneArtistOrder: Record<string, string[]> = {
+    "scene decouverte": [
+        "j8nriyucmzjtkim",
+        "k3je02zet3l6omq",
+        "iq6z8renidcpc7t",
+        "tvwnq35rr932rcr",
+    ],
     "grande scene": [
         "x9be9qq8r4wrgml",
         "5ddozlisgqo03jc",
@@ -205,9 +212,21 @@ const heroImage = sceneWithImage?.image_scene
 const scheduledArtists: ScheduledArtist[] = sceneSlots.map((slot, index) => ({
     slot,
     artist: artists[index] || null,
-    dayLabel: formatDayLabel(slot.date_festival),
-    dateLabel: formatDateLabel(slot.date_festival),
-    timeLabel: formatTimeLabel(slot.date_festival),
+    dayLabel: (() => {
+        const artist = artists[index] || null;
+        const schedule = artist ? artistScheduleById[artist.id] : null;
+        return schedule?.date || formatDayLabel(slot.date_festival);
+    })(),
+    dateLabel: (() => {
+        const artist = artists[index] || null;
+        const schedule = artist ? artistScheduleById[artist.id] : null;
+        return schedule?.date || formatDateLabel(slot.date_festival);
+    })(),
+    timeLabel: (() => {
+        const artist = artists[index] || null;
+        const schedule = artist ? artistScheduleById[artist.id] : null;
+        return schedule?.horaire || formatTimeLabel(slot.date_festival);
+    })(),
 }));
 
 const groupedArtists = Array.from(
@@ -228,7 +247,9 @@ const groupedArtists = Array.from(
 
 <Layout title={sceneName}>
     <section class="scene-detail-page">
-        <a class="back-link" href="/scenes">Retour à la liste des scènes</a>
+        <a class="back-link" href="/scenes"
+            >&larr; Retour à la liste des scènes</a
+        >
 
         <header class="scene-hero">
             <div class="scene-hero-copy">
@@ -303,104 +324,109 @@ const groupedArtists = Array.from(
 
 <style>
     .scene-detail-page {
-        max-width: 1100px;
+        max-width: 410px;
         margin: 0 auto;
-        padding: 1.4rem 0.45rem 2rem;
+        padding: 0.75rem 0.42rem 1.8rem;
     }
 
     .back-link {
         display: inline-flex;
-        margin-bottom: 1rem;
+        margin-bottom: 0.4rem;
         font-family: "Ag Body", serif;
-        font-size: 1rem;
-        color: #7a2018;
+        font-size: 0.68rem;
+        line-height: 1;
+        color: #6f675d;
         text-decoration: none;
     }
 
     .scene-hero {
         display: grid;
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        gap: 0.7rem;
+        margin-bottom: 1rem;
     }
 
     .scene-hero-copy h1 {
-        margin: 0 0 0.2rem;
+        margin: 0 0 0.08rem;
         font-family: "Ag Body", serif;
-        font-size: clamp(2.8rem, 10vw, 5.6rem);
-        line-height: 0.95;
+        font-size: clamp(2.75rem, 13vw, 4.5rem);
+        line-height: 0.9;
         color: #9a6f29;
     }
 
     .scene-subtitle {
         margin: 0;
         font-family: "Ag Body", serif;
-        font-size: clamp(1.3rem, 4.4vw, 2rem);
-        color: #7d2018;
+        font-size: clamp(0.88rem, 3.6vw, 1.12rem);
+        line-height: 1.1;
+        font-weight: 700;
+        color: #7a2018;
     }
 
     .scene-hero img {
         width: 100%;
-        height: 320px;
+        height: 250px;
         object-fit: cover;
-        border-radius: 1.6rem;
-        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+        border-radius: 0;
+        box-shadow: none;
     }
 
     .artists-section h2 {
-        margin: 0 0 1rem;
+        margin: 0.6rem 0 0.55rem;
         font-family: "Ag Body", serif;
-        font-size: clamp(2.2rem, 8vw, 4rem);
-        color: #9a6f29;
+        font-size: clamp(1.28rem, 5.6vw, 1.9rem);
+        line-height: 1;
+        color: #7a2018;
     }
 
     .day-group {
-        margin-bottom: 1.2rem;
+        margin-bottom: 0.78rem;
     }
 
     .day-group h3 {
-        margin: 0 0 0.6rem;
+        margin: 0 0 0.3rem;
         font-family: "Ag Body", serif;
-        font-size: clamp(1rem, 3.5vw, 1.4rem);
-        color: #7a2018;
+        font-size: clamp(0.62rem, 2.4vw, 0.78rem);
+        line-height: 1.1;
+        color: #6a6358;
         text-transform: capitalize;
     }
 
     .artists-list {
         display: grid;
-        gap: 0.85rem;
+        gap: 0.42rem;
     }
 
     .artist-card {
         display: grid;
-        grid-template-columns: 108px 1fr;
-        gap: 0.8rem;
+        grid-template-columns: 72px 1fr;
+        gap: 0.48rem;
         align-items: stretch;
-        padding: 0.7rem;
-        background: #1f2023;
-        border-radius: 1.35rem;
+        padding: 0.38rem;
+        background: #d6d1c7;
+        border-radius: 0.52rem;
         text-decoration: none;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+        box-shadow: none;
     }
 
     .artist-card img {
         width: 100%;
         height: 100%;
-        min-height: 118px;
+        min-height: 78px;
         object-fit: cover;
-        border-radius: 1rem;
+        border-radius: 0.45rem;
     }
 
     .artist-content {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        gap: 0.25rem;
+        gap: 0.06rem;
     }
 
     .artist-content h4 {
         margin: 0;
         font-family: "Ag Body", serif;
-        font-size: clamp(1.35rem, 4vw, 1.8rem);
+        font-size: clamp(0.8rem, 3.1vw, 1rem);
         line-height: 1.05;
         color: #a98034;
     }
@@ -408,26 +434,38 @@ const groupedArtists = Array.from(
     .artist-type {
         margin: 0;
         font-family: "Ag Body", serif;
-        font-size: 1rem;
-        color: #f1e8da;
+        font-size: 0.6rem;
+        color: #8b2a1e;
     }
 
     .artist-meta {
         display: grid;
-        gap: 0.12rem;
+        gap: 0.02rem;
         font-family: "Ag Body", serif;
-        font-size: 0.98rem;
-        color: #c77f34;
+        font-size: 0.56rem;
+        line-height: 1.15;
+        color: #554d44;
+    }
+
+    .artist-meta span {
+        display: block;
     }
 
     .artist-meta strong {
-        color: #7d2018;
+        color: #7a2018;
         font-weight: 700;
     }
 
     @media (min-width: 900px) {
         .scene-detail-page {
+            max-width: 1100px;
             padding: 1.8rem 1.3rem 2.6rem;
+        }
+
+        .back-link {
+            font-size: 1rem;
+            color: #7a2018;
+            margin-bottom: 1rem;
         }
 
         .scene-hero {
@@ -438,10 +476,50 @@ const groupedArtists = Array.from(
 
         .scene-hero img {
             height: 440px;
+            border-radius: 1.6rem;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+        }
+
+        .artists-section h2 {
+            margin: 0 0 1rem;
+            font-size: clamp(2.2rem, 8vw, 4rem);
+            color: #9a6f29;
+        }
+
+        .day-group h3 {
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            margin: 0 0 0.6rem;
+            color: #7a2018;
         }
 
         .artists-list {
             grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.85rem;
+        }
+
+        .artist-card {
+            grid-template-columns: 108px 1fr;
+            gap: 0.8rem;
+            padding: 0.7rem;
+            border-radius: 1.1rem;
+        }
+
+        .artist-card img {
+            min-height: 118px;
+            border-radius: 0.95rem;
+        }
+
+        .artist-content h4 {
+            font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+        }
+
+        .artist-type {
+            font-size: 0.92rem;
+        }
+
+        .artist-meta {
+            font-size: 0.9rem;
+            gap: 0.12rem;
         }
     }
 </style>
