@@ -6,7 +6,7 @@ import {
   getSceneById,
   getArtistesBySceneId,
   getArtistesBySceneName,
-} from './backend.mjs';
+} from '../backend/backend.mjs';
 
 function ok(label) { console.log(`  ✅ ${label}`); }
 function fail(label, err) { console.error(`  ❌ ${label}: ${err?.message ?? err}`); }
