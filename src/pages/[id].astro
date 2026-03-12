@@ -5,6 +5,7 @@ import {
     getArtisteById,
     pb,
 } from "../../backend/backend.mjs";
+import { artistScheduleById } from "../data/artistSchedule";
 
 export async function getStaticPaths() {
     const artistes = await getArtistesAlpha();
@@ -34,6 +35,7 @@ if (isValidPocketBaseId) {
 if (!artiste) {
     Astro.response.status = 404;
 }
+const preciseSchedule = artiste?.id ? artistScheduleById[artiste.id] : null;
 
 const name =
     artiste?.nom_prenom_pseudo_artiste ||
@@ -44,9 +46,18 @@ const genre = artiste?.type_de_festival || "Tap";
 const description =
     artiste?.description ||
     "Artiste invité du Flying Tap Fest, découvrez son univers, son énergie et son style sur scène.";
-const scene = artiste?.nom_scene || "Scène Découverte";
-const date = artiste?.dateRepresentation || artiste?.date || "06 juin 2025";
-const horaire = artiste?.horaire || artiste?.heure || "14:00";
+const scene =
+    preciseSchedule?.scene || artiste?.nom_scene || "Scène Découverte";
+const date =
+    preciseSchedule?.date ||
+    artiste?.dateRepresentation ||
+    artiste?.date ||
+    "Date à confirmer";
+const horaire =
+    preciseSchedule?.horaire ||
+    artiste?.horaire ||
+    artiste?.heure ||
+    "Horaire à confirmer";
 const photoField = artiste?.photo_artiste || artiste?.image;
 const heroImage =
     artiste && photoField
