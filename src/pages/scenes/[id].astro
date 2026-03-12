@@ -1,0 +1,433 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import {
+    getArtistesAlpha,
+    getScenesByName,
+    pb,
+} from "../../../backend/backend.mjs";
+
+type SceneRecord = {
+    image_scene?: string;
+    scene?: string;
+    nom?: string;
+    nom_scene?: string;
+    date_festival?: string;
+    [key: string]: unknown;
+};
+
+type ArtistRecord = {
+    id: string;
+    nom_prenom_pseudo_artiste?: string;
+    nom?: string;
+    name?: string;
+    nom_scene?: string;
+    scene?: string;
+    photo_artiste?: string;
+    type_de_festival?: string;
+    [key: string]: unknown;
+};
+
+type ScheduledArtist = {
+    slot: SceneRecord;
+    artist: ArtistRecord | null;
+    dayLabel: string;
+    dateLabel: string;
+    timeLabel: string;
+};
+
+function normalizeSceneName(sceneName: string) {
+    return (sceneName || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim()
+        .toLowerCase();
+}
+
+function slugifySceneName(sceneName: string) {
+    return normalizeSceneName(sceneName)
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "");
+}
+
+function getSceneDescription(sceneName: string) {
+    const normalizedName = normalizeSceneName(sceneName);
+
+    if (normalizedName.includes("grande")) {
+        return "La scène principale accueille les performances les plus attendues du festival dans une ambiance ample et spectaculaire.";
+    }
+
+    if (normalizedName.includes("decouverte")) {
+        return "Une scène plus intime dédiée aux révélations, aux formats surprenants et aux rencontres artistiques.";
+    }
+
+    return "Une scène pensée pour mettre les artistes et le public au plus près du rythme.";
+}
+
+function getSceneSubtitle(sceneName: string) {
+    const normalizedName = normalizeSceneName(sceneName);
+
+    if (normalizedName.includes("grande")) {
+        return "Sous le grand chapiteau";
+    }
+
+    if (normalizedName.includes("decouverte")) {
+        return "Dans l'espace découverte du festival";
+    }
+
+    return "Au coeur du festival";
+}
+
+function getFallbackSceneImage(sceneName: string) {
+    const normalizedName = normalizeSceneName(sceneName);
+
+    if (normalizedName.includes("grande")) {
+        return "/programme_pageaccueil.jpg";
+    }
+
+    if (normalizedName.includes("decouverte")) {
+        return "/artistes_pageaccueil.jpg";
+    }
+
+    return "/hero_image_tap_dancer.jpg";
+}
+
+function formatDayLabel(value: string | number | Date | undefined) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Programmation";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+    }).format(date);
+}
+
+function formatDateLabel(value: string | number | Date | undefined) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Date à confirmer";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    }).format(date);
+}
+
+function formatTimeLabel(value: string | number | Date | undefined) {
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+        return "Horaire à confirmer";
+    }
+
+    return new Intl.DateTimeFormat("fr-FR", {
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
+}
+
+export async function getStaticPaths() {
+    const scenes = await getScenesByName();
+    const uniqueScenes = Array.from(
+        scenes
+            .reduce((sceneMap, scene) => {
+                const name =
+                    scene.scene || scene.nom || scene.nom_scene || "Scène";
+                const key = normalizeSceneName(name);
+
+                if (!sceneMap.has(key)) {
+                    sceneMap.set(key, name);
+                }
+
+                return sceneMap;
+            }, new Map())
+            .values(),
+    );
+
+    return uniqueScenes.map((sceneName) => ({
+        params: { id: slugifySceneName(sceneName) },
+        props: { sceneName },
+    }));
+}
+
+const { sceneName } = Astro.props;
+const allScenes = await getScenesByName();
+const allArtists = await getArtistesAlpha();
+const normalizedCurrentScene = normalizeSceneName(sceneName);
+
+const sceneSlots = (allScenes as SceneRecord[])
+    .filter(
+        (scene) =>
+            normalizeSceneName(
+                scene.scene || scene.nom || scene.nom_scene || "",
+            ) === normalizedCurrentScene,
+    )
+    .sort(
+        (leftSlot, rightSlot) =>
+            new Date(leftSlot.date_festival || 0).getTime() -
+            new Date(rightSlot.date_festival || 0).getTime(),
+    );
+
+const artists = (allArtists as ArtistRecord[]).filter(
+    (artist) =>
+        normalizeSceneName(artist.nom_scene || artist.scene || "") ===
+        normalizedCurrentScene,
+);
+
+const sceneWithImage = sceneSlots.find((scene) => scene.image_scene);
+
+const heroImage = sceneWithImage?.image_scene
+    ? pb.files.getURL(sceneWithImage, sceneWithImage.image_scene)
+    : getFallbackSceneImage(sceneName);
+
+const scheduledArtists: ScheduledArtist[] = sceneSlots.map((slot, index) => ({
+    slot,
+    artist: artists[index] || null,
+    dayLabel: formatDayLabel(slot.date_festival),
+    dateLabel: formatDateLabel(slot.date_festival),
+    timeLabel: formatTimeLabel(slot.date_festival),
+}));
+
+const groupedArtists = Array.from(
+    scheduledArtists.reduce((dayMap, entry) => {
+        if (!entry.artist) {
+            return dayMap;
+        }
+
+        if (!dayMap.has(entry.dayLabel)) {
+            dayMap.set(entry.dayLabel, []);
+        }
+
+        dayMap.get(entry.dayLabel).push(entry);
+        return dayMap;
+    }, new Map<string, ScheduledArtist[]>()),
+).map(([dayLabel, entries]) => ({ dayLabel, entries }));
+---
+
+<Layout title={sceneName}>
+    <section class="scene-detail-page">
+        <a class="back-link" href="/scenes">Retour à la liste des scènes</a>
+
+        <header class="scene-hero">
+            <div class="scene-hero-copy">
+                <h1>{sceneName}</h1>
+                <p class="scene-subtitle">{getSceneSubtitle(sceneName)}</p>
+                <p class="scene-description">
+                    {getSceneDescription(sceneName)}
+                </p>
+            </div>
+
+            <img src={heroImage} alt={sceneName} loading="eager" />
+        </header>
+
+        <section class="artists-section">
+            <h2>Artistes Présents</h2>
+
+            {
+                groupedArtists.map((group) => (
+                    <div class="day-group">
+                        <h3>{group.dayLabel}</h3>
+
+                        <div class="artists-list">
+                            {group.entries.map((entry: ScheduledArtist) => {
+                                const { artist, dateLabel, timeLabel } = entry;
+                                const artistName =
+                                    artist.nom_prenom_pseudo_artiste ||
+                                    artist.nom ||
+                                    artist.name ||
+                                    "Artiste";
+                                const artistType =
+                                    artist.type_de_festival || "Performance";
+                                const artistImage = artist.photo_artiste
+                                    ? pb.files.getURL(
+                                          artist,
+                                          artist.photo_artiste,
+                                      )
+                                    : "/hero_image_tap_dancer.jpg";
+
+                                return (
+                                    <a
+                                        class="artist-card"
+                                        href={`/${artist.id}`}
+                                    >
+                                        <img
+                                            src={artistImage}
+                                            alt={artistName}
+                                            loading="lazy"
+                                        />
+                                        <div class="artist-content">
+                                            <h4>{artistName}</h4>
+                                            <p class="artist-type">
+                                                {artistType}
+                                            </p>
+                                            <div class="artist-meta">
+                                                <span>{timeLabel}</span>
+                                                <span>{dateLabel}</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </div>
+                ))
+            }
+        </section>
+    </section>
+</Layout>
+
+<style>
+    .scene-detail-page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.4rem 0.45rem 2rem;
+    }
+
+    .back-link {
+        display: inline-flex;
+        margin-bottom: 1rem;
+        font-family: "Ag Body", serif;
+        font-size: 1rem;
+        color: #7a2018;
+        text-decoration: none;
+    }
+
+    .scene-hero {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .scene-hero-copy h1 {
+        margin: 0 0 0.2rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(2.8rem, 10vw, 5.6rem);
+        line-height: 0.95;
+        color: #9a6f29;
+    }
+
+    .scene-subtitle {
+        margin: 0 0 0.4rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.3rem, 4.4vw, 2rem);
+        color: #7d2018;
+    }
+
+    .scene-description {
+        max-width: 42rem;
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: 1.05rem;
+        line-height: 1.45;
+        color: #3f3028;
+    }
+
+    .scene-hero img {
+        width: 100%;
+        height: 320px;
+        object-fit: cover;
+        border-radius: 1.6rem;
+        box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    .artists-section h2 {
+        margin: 0 0 1rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(2.2rem, 8vw, 4rem);
+        color: #9a6f29;
+    }
+
+    .day-group {
+        margin-bottom: 1.2rem;
+    }
+
+    .day-group h3 {
+        margin: 0 0 0.6rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.2rem, 4vw, 1.8rem);
+        color: #7a2018;
+        text-transform: capitalize;
+    }
+
+    .artists-list {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    .artist-card {
+        display: grid;
+        grid-template-columns: 108px 1fr;
+        gap: 0.8rem;
+        align-items: stretch;
+        padding: 0.7rem;
+        background: #1f2023;
+        border-radius: 1.35rem;
+        text-decoration: none;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .artist-card img {
+        width: 100%;
+        height: 100%;
+        min-height: 118px;
+        object-fit: cover;
+        border-radius: 1rem;
+    }
+
+    .artist-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 0.25rem;
+    }
+
+    .artist-content h4 {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.35rem, 4vw, 1.8rem);
+        line-height: 1.05;
+        color: #a98034;
+    }
+
+    .artist-type {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: 1rem;
+        color: #f1e8da;
+    }
+
+    .artist-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.9rem;
+        font-family: "Ag Body", serif;
+        font-size: 0.98rem;
+        color: #c77f34;
+    }
+
+    @media (min-width: 900px) {
+        .scene-detail-page {
+            padding: 1.8rem 1.3rem 2.6rem;
+        }
+
+        .scene-hero {
+            grid-template-columns: minmax(0, 1fr) minmax(380px, 500px);
+            align-items: start;
+            gap: 1.4rem;
+        }
+
+        .scene-hero img {
+            height: 440px;
+        }
+
+        .artists-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

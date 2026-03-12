@@ -1,73 +1,154 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
 import { getArtistesAlpha, pb } from "../../backend/backend.mjs";
 
 const artistes = await getArtistesAlpha();
-console.log(artistes);
 ---
 
 <Layout title="Artistes">
-	<Header
-		title="Nos Artistes"
-		subtitle="Rencontrez les professionnels du tap"
-		showEvents={false}
-	/>
-	<section>
-		<ul>
-			{
-				artistes.map((artiste) => (
-					<li key={artiste.id}>{artiste.name}</li>
-				))
-			}
-		</ul>
-	</section>
+	<section class="artists-page">
+		<h1>Artistes</h1>
 
-	<div class="artistes-list">
-		{
-			artistes.map((artiste) => (
-				<li>
-					<h2>{artiste.nom}</h2>
-					<img
-						src={pb.files.getURL(artiste, artiste.image)}
-						alt={artiste.nom}
-						width="200"
-					/>
-				</li>
-			))
-		}
-	</div>
-	<section class="footer">
-		<h3>Flying Tap Fest</h3>
-		<p>
-			Le festival de claquettes qui fait vibrer Montbéliard chaque été.
-			Une célébration de la danse, du rythme et de la culture tap.
-		</p>
-		<h3>Liens Rapides</h3>
-		<ul>
-			<li><a href="/festival">Le Festival</a></li>
-			<li><a href="/programme">Programme</a></li>
-			<li><a href="/artistes">Artistes</a></li>
-			<li><a href="/infos-pratiques">Infos Pratiques</a></li>
-			<li><a href="/contact">Contact</a></li>
-		</ul>
-		<h3>Suivez-nous</h3>
-		<a href="https://www.facebook.com/flyingtapfest" target="_blank"
-			>Facebook</a
-		> |
-		<a href="https://www.youtube.com/flyingtapfest" target="_blank"
-			>YouTube</a
-		> |
-		<a href="https://www.twitter.com/flyingtapfest" target="_blank"
-			>Twitter</a
-		>
-		<a href="https://www.instagram.com/flyingtapfest" target="_blank"
-			>Instagram</a
-		>
-		<p>&copy; 2026 Flying Tap Fest. Tous droits réservés.</p>
-		<p>
-			Contact: <a href="mailto:info@flyingtapfest.com"
-				>info@flyingtapfest.com</a>
-		</p>
+		<div class="artists-list">
+			{
+				artistes.map((artiste) => {
+					const photoField = artiste.photo_artiste || artiste.image;
+					const imageUrl = photoField
+						? pb.files.getURL(artiste, photoField)
+						: "/hero_image_tap_dancer.jpg";
+					const name =
+						artiste.nom_prenom_pseudo_artiste ||
+						artiste.nom ||
+						artiste.name ||
+						"Artiste";
+					const genre = artiste.type_de_festival || "Tap";
+					const horaire = artiste.horaire || artiste.heure || "--:--";
+					const date =
+						artiste.dateRepresentation ||
+						artiste.date ||
+						"06 juin 2025";
+					const scene = artiste.nom_scene || "Scène Découverte";
+
+					return (
+						<a href={`/${artiste.id}`} class="artist-card-link">
+							<article class="artist-card">
+								<img src={imageUrl} alt={name} loading="lazy" />
+								<div class="card-content">
+									<h2>{name}</h2>
+									<p class="genre">{genre}</p>
+									<p>
+										<strong>Horaire :</strong> {horaire}
+									</p>
+									<p>
+										<strong>Date :</strong> {date}
+									</p>
+									<p>
+										<strong>Scène :</strong> {scene}
+									</p>
+								</div>
+							</article>
+						</a>
+					);
+				})
+			}
+		</div>
 	</section>
 </Layout>
+
+<style>
+	.artists-page {
+		max-width: 1100px;
+		margin: 0 auto;
+		padding: 1.4rem 0.45rem 2rem;
+	}
+
+	.artists-page h1 {
+		margin: 0 0 0.8rem;
+		font-family: "Ag Body", serif;
+		font-size: clamp(2.4rem, 7.5vw, 4.2rem);
+		line-height: 1;
+		color: #9a6f29;
+	}
+
+	.artists-list {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.artist-card-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.artist-card {
+		background: #1f2023;
+		border-radius: 1.2rem;
+		overflow: hidden;
+		box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+		transition:
+			transform 0.18s ease,
+			box-shadow 0.18s ease;
+	}
+
+	.artist-card-link:hover .artist-card,
+	.artist-card-link:focus-visible .artist-card {
+		transform: translateY(-3px);
+		box-shadow: 0 12px 22px rgba(0, 0, 0, 0.18);
+	}
+
+	.artist-card img {
+		display: block;
+		width: 100%;
+		height: 210px;
+		object-fit: cover;
+	}
+
+	.card-content {
+		padding: 0.8rem 0.65rem 0.95rem;
+	}
+
+	.card-content h2 {
+		margin: 0;
+		font-family: "Ag Body", serif;
+		font-size: clamp(1.55rem, 5.5vw, 2rem);
+		line-height: 1.04;
+		color: #a98034;
+	}
+
+	.card-content .genre {
+		margin: 0.25rem 0 0.55rem;
+		color: #8b2a1e;
+		font-family: "Ag Body", serif;
+		font-size: clamp(1rem, 3.5vw, 1.25rem);
+		font-weight: 700;
+	}
+
+	.card-content p {
+		margin: 0.2rem 0;
+		color: #f0e3ce;
+		font-family: "Ag Body", serif;
+		font-size: clamp(0.95rem, 3.2vw, 1.16rem);
+	}
+
+	.card-content p strong {
+		color: #a98034;
+		font-weight: 700;
+	}
+
+	@media (min-width: 900px) {
+		.artists-page {
+			padding: 1.8rem 1.3rem 2.6rem;
+		}
+
+		.artists-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 1.2rem;
+		}
+
+		.artist-card img {
+			height: 250px;
+		}
+	}
+</style>

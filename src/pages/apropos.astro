@@ -1,6 +1,87 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
+
+const pageData = {
+  mainTitle: "Le Festival",
+  historyTitle: "Notre Histoire",
+  historyParagraphs: [
+    {
+      textBefore:
+        "Le Flying Tap Fest est un festival né d’une ambition claire : ",
+      highlighted:
+        "réunir l’énergie rythmée des claquettes et la poésie lumineuse des drones",
+      textAfter:
+        ", afin de proposer une expérience artistique nouvelle. Imaginé dans le cadre d’une stratégie de communication axée sur la modernité et l’ouverture culturelle, le festival voit le jour avec la volonté de dépoussiérer la discipline des claquettes tout en respectant son héritage.",
+    },
+    {
+      textBefore: "Le festival se déroule au ",
+      highlighted: "Parc du Près-la-Rose à Montbéliard, les 6 et 7 juin 2026",
+      textAfter:
+        ", au début de la période estivale, pour accueillir aussi bien les familles, les passionnés de danse, que les curieux en quête d’expériences innovantes",
+    },
+  ],
+  historyImage: {
+    src: "/image1_apropos.png",
+    alt: "Image 1",
+  },
+  mixTitle: "Pensé pour mélanger tradition et modernité, il associe :",
+  mixItems: [
+    "spectacles de claquettes,",
+    "performances lumineuses de drones,",
+    "ateliers culturels et intergénérationnels,",
+    "rencontres avec les artistes.",
+  ],
+  teamTitle: "Notre Equipe",
+  teamMembers: [
+    {
+      name: "Marie Dubois",
+      role: "Directrice Artistique",
+      description:
+        "Danseuse et chorégraphe reconnue, Marie dirige le festival depuis sa création.",
+      image: "/hero_image_tap_dancer.jpg",
+      alt: "Portrait de Marie Dubois",
+    },
+    {
+      name: "Thomas Leroy",
+      role: "Responsable Technique",
+      description:
+        "Expert en scénographie, Thomas assure la qualité des shows et des installations.",
+      image: "/image1_apropos.png",
+      alt: "Portrait de Thomas Leroy",
+    },
+    {
+      name: "Sarah Niel",
+      role: "Coordination Événementielle",
+      description:
+        "Sarah pilote l'organisation du festival pour garantir une expérience fluide au public.",
+      image: "/hero_image_tap_dancer.jpg",
+      alt: "Portrait de Sarah Niel",
+    },
+  ],
+  valuesTitle: "Nos Valeurs",
+  values: [
+    {
+      title: "Éco-Responsabilité Exemplaire",
+      text: "Le Flying Tap Fest place l’environnement au cœur de son organisation. Communication numérique, impressions sur papier recyclé et gestion rigoureuse des déchets garantissent un événement à l’empreinte aussi légère que nos pas de claquettes.",
+    },
+    {
+      title: "Innovation & Créativité",
+      text: "Nous réinventons l’expérience du spectacle vivant en fusionnant claquettes et drones lumineux. Cette approche moderne offre au public un univers visuel inédit, mêlant technologie, mouvement et poésie.",
+    },
+    {
+      title: "Culture & Transmission",
+      text: "Le festival s’engage à valoriser les claquettes comme discipline artistique accessible à tous. Ateliers, rencontres et cours permettent aux visiteurs de découvrir, apprendre et partager, quel que soit leur âge ou leur niveau.",
+    },
+    {
+      title: "Ouverture au Public",
+      text: "Pensé pour les jeunes, les familles, les passionnés comme les curieux, le Flying Tap Fest propose un programme intergénérationnel et inclusif, réunissant tradition, modernité et convivialité.",
+    },
+  ],
+  editionTitle: "Édition 2026",
+  editionText:
+    '"Un festival entre ciel et terre" Une célébration des claquettes à travers les cultures',
+};
 ---
 
 <Layout title="Le Festival">
@@ -9,98 +90,316 @@ import Header from "../components/Header.astro";
     subtitle="Découvrez notre histoire"
     showEvents={false}
   />
-  <h1>À propos du festival</h1>
-  <section class="description">
-    <h2>Notre Histoire</h2>
-    <p>
-      Le Flying Tap Fest est un festival né d’une ambition claire : réunir
-      l’énergie rythmée des claquettes et la poésie lumineuse des drones, afin
-      de proposer une expérience artistique nouvelle. Imaginé dans le cadre
-      d’une stratégie de communication axée sur la modernité et l’ouverture
-      culturelle, le festival voit le jour avec la volonté de dépoussiérer la
-      discipline des claquettes tout en respectant son héritage. Le festival se
-      déroule au Parc du Près-la-Rose à Montbéliard, les 6 et 7 juin 2026, au
-      début de la période estivale, pour accueillir aussi bien les familles, les
-      passionnés de danse, que les curieux en quête d’expériences innovantes
-    </p>
-    <img src="/public/image1_apropos.jpg" alt="Image 1" />
-    <section>
-      <h3>Pensé pour mélanger tradition et modernité, il associe :</h3>
-      <ul>
-        <li>spectacles de claquettes,</li>
-        <li>performances lumineuses de drones,</li>
-        <li>ateliers culturels et intergénérationnels,</li>
-        <li>rencontres avec les artistes.</li>
-      </ul>
+  <div class="page-content">
+    <h1 class="festival-title">{pageData.mainTitle}</h1>
+    <section class="description">
+      <h2 class="history-title">{pageData.historyTitle}</h2>
+      <div class="history-block">
+        {
+          pageData.historyParagraphs.map((paragraph) => (
+            <p class="history-text">
+              {paragraph.textBefore}
+              <strong>{paragraph.highlighted}</strong>
+              {paragraph.textAfter}
+            </p>
+          ))
+        }
+      </div>
+      <img src={pageData.historyImage.src} alt={pageData.historyImage.alt} />
+      <section class="mix-card">
+        <h3 class="mix-title">{pageData.mixTitle}</h3>
+        <ul class="mix-list">
+          {pageData.mixItems.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
     </section>
-  </section>
-  <section class="équipe">
-    <h2>Notre Equipe</h2>
-  </section>
+    <section class="équipe">
+      <h2>{pageData.teamTitle}</h2>
+      <div class="team-gallery" aria-label="Galerie de l'équipe du festival">
+        {
+          pageData.teamMembers.map((member) => (
+            <article class="team-card">
+              <img src={member.image} alt={member.alt} class="team-photo" />
+              <div class="team-content">
+                <h3 class="team-name">{member.name}</h3>
+                <p class="team-role">{member.role}</p>
+                <p class="team-description">{member.description}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
 
-  <section class="valeurs">
-    <h2>Nos Valeurs</h2>
-    <h3>Éco-Responsabilité Exemplaire</h3>
-    <p>
-      Le Flying Tap Fest place l’environnement au cœur de son organisation.
-      Communication numérique, impressions sur papier recyclé et gestion
-      rigoureuse des déchets garantissent un événement à l’empreinte aussi
-      légère que nos pas de claquettes.
-    </p>
-    <h3>Innovation & Créativité</h3>
-    <p>
-      Nous réinventons l’expérience du spectacle vivant en fusionnant claquettes
-      et drones lumineux. Cette approche moderne offre au public un univers
-      visuel inédit, mêlant technologie, mouvement et poésie.
-    </p>
-    <h3>Culture & Transmission</h3>
-    <p>
-      Le festival s’engage à valoriser les claquettes comme discipline
-      artistique accessible à tous. Ateliers, rencontres et cours permettent aux
-      visiteurs de découvrir, apprendre et partager, quel que soit leur âge ou
-      leur niveau.
-    </p>
-    <h3>Ouverture au Public</h3>
-    <p>
-      Pensé pour les jeunes, les familles, les passionnés comme les curieux, le
-      Flying Tap Fest propose un programme intergénérationnel et inclusif,
-      réunissant tradition, modernité et convivialité.
-    </p>
-  </section>
+    <section class="valeurs">
+      <h2>{pageData.valuesTitle}</h2>
+      {
+        pageData.values.map((value) => (
+          <>
+            <h3>{value.title}</h3>
+            <p>{value.text}</p>
+          </>
+        ))
+      }
+    </section>
 
-  <section>
-    <h2>Édition 2026</h2>
-    <p>
-      "Un festival entre ciel et terre" Une célébration des claquettes à travers
-      les cultures
-    </p>
-  </section>
-  <section class="footer">
-    <h3>Flying Tap Fest</h3>
-    <p>
-      Le festival de claquettes qui fait vibrer Montbéliard chaque été. Une
-      célébration de la danse, du rythme et de la culture tap.
-    </p>
-    <h3>Liens Rapides</h3>
-    <ul>
-      <li><a href="/festival">Le Festival</a></li>
-      <li><a href="/programme">Programme</a></li>
-      <li><a href="/artistes">Artistes</a></li>
-      <li><a href="/infos-pratiques">Infos Pratiques</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-    <h3>Suivez-nous</h3>
-    <a href="https://www.facebook.com/flyingtapfest" target="_blank">Facebook</a
-    > |
-    <a href="https://www.youtube.com/flyingtapfest" target="_blank">YouTube</a> |
-    <a href="https://www.twitter.com/flyingtapfest" target="_blank">Twitter</a>
-    <a href="https://www.instagram.com/flyingtapfest" target="_blank"
-      >Instagram</a
-    >
-    <p>&copy; 2026 Flying Tap Fest. Tous droits réservés.</p>
-    <p>
-      Contact: <a href="mailto:info@flyingtapfest.com"
-        >info@flyingtapfest.com</a>
-    </p>
-  </section>
+    <section class="edition-strip">
+      <h2 class="edition-strip-title">{pageData.editionTitle}</h2>
+      <p class="edition-strip-text">{pageData.editionText}</p>
+    </section>
+  </div>
 </Layout>
+
+<style>
+  :global(body) {
+    background: #dfdcd5;
+  }
+
+  .festival-title {
+    margin: 2.2rem 0 1.4rem;
+    width: 100%;
+    padding: 0;
+    font-family: "Ag Body", serif;
+    font-size: clamp(2.6rem, 6.2vw, 4rem);
+    line-height: 1;
+    color: #9a6a1f;
+    font-weight: 700;
+  }
+
+  .page-content {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 1.2rem 2.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: left;
+    gap: 2rem;
+  }
+
+  .page-content > section {
+    width: 100%;
+  }
+
+  .description {
+    padding: 0;
+  }
+
+  .history-block {
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 1.1rem;
+  }
+
+  .history-title {
+    margin: 0 0 1.4rem;
+    font-family: "Ag Body", serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: #7c2c1f;
+    line-height: 1.05;
+  }
+
+  .history-text {
+    margin: 0 0 1.2rem;
+    max-width: 62ch;
+    font-family: "Ag Body", serif;
+    font-size: clamp(1.18rem, 2.1vw, 1.85rem);
+    line-height: 1.5;
+    color: #1e1c1a;
+  }
+
+  .history-text strong {
+    font-weight: 700;
+  }
+
+  .description img {
+    margin-top: 0.8rem;
+    border-radius: 0.9rem;
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .mix-card {
+    margin: 1.4rem 0 0;
+    max-width: 540px;
+    background: #232323;
+    border-radius: 1.2rem;
+    padding: 0.95rem 1.1rem 1.05rem;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  .mix-title {
+    margin: 0 0 0.55rem;
+    font-family: "Ag Body", serif;
+    font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    line-height: 1.2;
+    color: #d3bc8e;
+    font-weight: 700;
+  }
+
+  .mix-list {
+    margin: 0;
+    padding-left: 1.15rem;
+    list-style-type: disc;
+    list-style-position: outside;
+    display: block;
+    text-align: left;
+    color: #f1ede5;
+    font-family: "Ag Body", serif;
+    font-size: clamp(0.95rem, 2vw, 1.2rem);
+    line-height: 1.45;
+  }
+
+  .mix-list li {
+    display: list-item;
+    margin-bottom: 0.2rem;
+  }
+
+  .mix-list li::marker {
+    color: #f1ede5;
+  }
+
+  .équipe h2,
+  .valeurs h2,
+  .page-content > section h2 {
+    margin-top: 0;
+    color: #7c2c1f;
+    font-family: "Ag Body", serif;
+  }
+
+  .team-gallery {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 78%);
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 0.4rem 0.2rem 0.8rem;
+    scroll-snap-type: x mandatory;
+  }
+
+  .team-card {
+    scroll-snap-align: start;
+    background: #b7ac9c;
+    border-radius: 1.1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+
+  .team-photo {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .team-content {
+    padding: 0.9rem 0.85rem 1.05rem;
+    text-align: center;
+  }
+
+  .team-name {
+    margin: 0;
+    color: #1f1a14;
+    font-size: clamp(1.45rem, 3.5vw, 1.8rem);
+    line-height: 1.05;
+  }
+
+  .team-role {
+    margin: 0.22rem 0 0.45rem;
+    color: #8e3528;
+    font-weight: 700;
+    font-size: clamp(1rem, 2.4vw, 1.2rem);
+  }
+
+  .team-description {
+    margin: 0;
+    color: #2d2a25;
+    font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+    line-height: 1.35;
+  }
+
+  .valeurs h3 {
+    margin: 1.65rem 0 0.45rem;
+    color: #a6843a;
+    font-family: "Ag Body", serif;
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    line-height: 1.15;
+  }
+
+  .valeurs p {
+    margin: 0;
+    max-width: 64ch;
+    color: #4f4b44;
+    font-family: "Ag Body", serif;
+    font-size: clamp(1.12rem, 2.15vw, 1.45rem);
+    line-height: 1.5;
+  }
+
+  .valeurs {
+    max-width: 760px;
+  }
+
+  .valeurs h2 {
+    margin-bottom: 0.75rem;
+    color: #7c2c1f;
+    font-family: "Ag Body", serif;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .edition-strip {
+    background: linear-gradient(90deg, #7d281b 0%, #8f3a20 50%, #a97832 100%);
+    border-radius: 0.15rem;
+    padding: 1.85rem 1.5rem 1.95rem;
+    text-align: center;
+    width: 100%;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .edition-strip-title {
+    margin: 0 0 0.55rem;
+    color: #ffffff;
+    font-family: "Ag Body", serif;
+    font-size: clamp(2.7rem, 5.7vw, 3.7rem);
+    line-height: 1.05;
+    font-weight: 800;
+  }
+
+  .edition-strip-text {
+    margin: 0;
+    color: #f6ede1;
+    font-family: "Ag Body", serif;
+    font-size: clamp(1.15rem, 2.5vw, 1.55rem);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  @media (min-width: 900px) {
+    .history-block {
+      padding: 1.6rem;
+    }
+
+    .page-content {
+      gap: 2.3rem;
+    }
+
+    .team-gallery {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      overflow: visible;
+    }
+
+    .team-photo {
+      height: 300px;
+    }
+
+    .edition-strip {
+      max-width: 560px;
+      padding: 1.55rem 1.3rem 1.65rem;
+    }
+  }
+
+</style>

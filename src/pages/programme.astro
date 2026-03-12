@@ -1,242 +1,306 @@
 ---
-import Layout from "../../src/layouts/Layout.astro";
+import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
-const { programme } = Astro.props;
+
+const filters = {
+    genres: [
+        "Tous les genres",
+        "Jeune Talent",
+        "Comédie Tap",
+        "Soul Tap",
+        "Tap Jazz",
+        "Flamenco Tap",
+        "Hip-Hop Tap",
+    ],
+    horaires: [
+        "Toutes les horaires",
+        "14:00",
+        "16:00",
+        "17:30",
+        "18:30",
+        "19:00",
+        "20:00",
+        "21:00",
+    ],
+    scenes: ["Toutes les scènes", "Scène Découverte", "Grande Scène"],
+};
 ---
 
 <Layout title="Programme">
     <Header
         title="Le Programme"
         subtitle="Découvrez tous les événements"
-        showEvents={true}
+        showEvents={false}
     />
 
-    <section>
-        <h1>Programme</h1>
-        <a href="/" class="btn">Télécharger le programme en PDF</a>
+    <section class="programme-page">
+        <h1 class="programme-title">Programme</h1>
+
+        <a
+            href="/"
+            class="pdf-btn"
+            aria-label="Télécharger le programme en PDF"
+        >
+            <span class="pdf-icon">⇩</span>
+            Télécharger le programme en PDF
+        </a>
+
+        <div class="filters-card">
+            <h2>Filtres</h2>
+
+            <div class="filter-group">
+                <label for="genre">Genre</label>
+                <select id="genre" name="genre">
+                    {
+                        filters.genres.map((option) => (
+                            <option value={option}>{option}</option>
+                        ))
+                    }
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="horaire">Horaire</label>
+                <select id="horaire" name="horaire">
+                    {
+                        filters.horaires.map((option) => (
+                            <option value={option}>{option}</option>
+                        ))
+                    }
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label for="scene">Scène</label>
+                <select id="scene" name="scene">
+                    {
+                        filters.scenes.map((option) => (
+                            <option value={option}>{option}</option>
+                        ))
+                    }
+                </select>
+            </div>
+        </div>
 
         <div class="events-grid">
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
-                    <h2>06 Juin</h2>
+            <article class="event-card">
+                <img src="/programme_pageaccueil.jpg" alt="Programme 06 Juin" />
+                <div class="event-content">
+                    <h3>06 Juin</h3>
                     <p>Milo Everstep</p>
                     <p>Jeune Talent</p>
                     <p>Horaire : 14:00</p>
                     <p>Scène : Scène Découverte</p>
-                    <a href="/festival" class="explore-link"
+                    <a href="/festival" class="event-link"
                         >Plus d'information <span>&#8594;</span></a
                     >
                 </div>
-            </div>
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="/programme_pageaccueil.jpg"
+                    alt="Programme Clara Delmare"
+                />
+                <div class="event-content">
                     <p>Clara "Silver Shoes" Delmare</p>
                     <p>Comédie Tap</p>
                     <p>Horaire : 16:00</p>
                     <p>Scène : Grande Scène</p>
-                    <a href="/festival" class="explore-link"
+                    <a href="/festival" class="event-link"
                         >Plus d'information <span>&#8594;</span></a
                     >
                 </div>
-            </div>
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="/programme_pageaccueil.jpg"
+                    alt="Programme Jaden Hartwell"
+                />
+                <div class="event-content">
                     <p>Jaden Hartwell</p>
                     <p>Soul Tap</p>
                     <p>Horaire : 18:30</p>
                     <p>Scène : Scène Découverte</p>
-                    <a href="/festival" class="explore-link"
+                    <a href="/festival" class="event-link"
                         >Plus d'information <span>&#8594;</span></a
                     >
                 </div>
-            </div>
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
+            </article>
+
+            <article class="event-card">
+                <img
+                    src="/programme_pageaccueil.jpg"
+                    alt="Programme Tessa Marlowe"
+                />
+                <div class="event-content">
                     <p>Tessa Marlowe</p>
                     <p>Tap Jazz</p>
                     <p>Horaire : 20:00</p>
                     <p>Scène : Grande Scène</p>
-                    <a href="/festival" class="explore-link"
+                    <a href="/festival" class="event-link"
                         >Plus d'information <span>&#8594;</span></a
                     >
                 </div>
-            </div>
-        </div>
-
-        <div class="events-grid">
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
-                    <h2>07 Juin</h2>
-                    <p>Elián Cortez</p>
-                    <p>Soul Tap</p>
-                    <p>Horaire : 16:00</p>
-                    <p>Scène : Scène Découverte</p>
-                    <a href="/festival" class="explore-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </div>
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
-                    <p>Theo Copperlane</p>
-                    <p>Flamenco Tap</p>
-                    <p>Horaire : 17:30</p>
-                    <p>Scène : Grande Scène</p>
-                    <a href="/festival" class="explore-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </div>
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
-                    <p>Damian Quickfoot</p>
-                    <p>Hip-Hop Tap</p>
-                    <p>Horaire : 19:00</p>
-                    <p>Scène : Scène Découverte</p>
-                    <a href="/festival" class="explore-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </div>
-            <div class="explore-card">
-                <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-                <div class="explore-card-content">
-                    <p>Marcus "Rapid Fire" Johnson</p>
-                    <p>Tap Pur</p>
-                    <p>Horaire : 21:00</p>
-                    <p>Scène : Grande Scène</p>
-                    <a href="/festival" class="explore-link"
-                        >Plus d'information <span>&#8594;</span></a
-                    >
-                </div>
-            </div>
+            </article>
         </div>
     </section>
 </Layout>
-<section>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <h2>06 Juin</h2>
-            <p>Milo Everstep</p>
-            <p>Jeune Talent</p>
-            <p>Horaire : 14:00</p>
-            <p>Scène : Scène Découverte</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <p>Clara "Silver Shoes" Delmare</p>
-            <p>Comédie Tap</p>
-            <p>Horaire : 16:00</p>
-            <p>Scène : Grande Scène</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <p>Jaden Hartwell</p>
-            <p>Soul Tap</p>
-            <p>Horaire : 18:30</p>
-            <p>Scène : Scène Découverte</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <p>Tessa Marlowe</p>
-            <p>Tap Jazz</p>
-            <p>Horaire : 20:00</p>
-            <p>Scène : Grande Scène</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-</section>
-<section>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <h2>07 Juin</h2>
-            <p>Elián Cortez</p>
-            <p>Soul Tap</p>
-            <p>Horaire : 16:00</p>
-            <p>Scène : Scène Découverte</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <p>Theo Copperlane</p>
-            <p>Flamenco Tap</p>
-            <p>Horaire : 17:30</p>
-            <p>Scène : Grande Scène</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <p>Damian Quickfoot</p>
-            <p>Hip-Hop Tap</p>
-            <p>Horaire : 19:00</p>
-            <p>Scène : Scène Découverte</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-    <div class="explore-card">
-        <img src="/public/programme_pageaccueil.jpg" alt="Programme" />
-        <div class="explore-card-content">
-            <p>Harper Drayton</p>
-            <p>Irish Tap</p>
-            <p>Horaire : 20:30</p>
-            <p>Scène : Grande Scène</p>
-            <a href="/festival" class="explore-link"
-                >Plus d'information <span>&#8594;</span></a
-            >
-        </div>
-    </div>
-</section>
 
 <style>
-    .card {
-        display: flex;
+    .programme-page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 1.5rem 1rem 2.4rem;
+    }
+
+    .programme-title {
+        margin: 0 0 1.1rem;
+        color: #9a6f29;
+        font-family: "Ag Body", serif;
+        font-size: clamp(3rem, 8vw, 5rem);
+        line-height: 1;
+    }
+
+    .pdf-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        margin: 0 0 1.5rem;
+        background: #8b271b;
+        color: #f7efe3;
+        text-decoration: none;
+        border-radius: 999px;
+        padding: 0.85rem 1.25rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.25rem, 3.2vw, 1.8rem);
+        font-weight: 700;
+        box-shadow: 0 5px 14px rgba(90, 28, 18, 0.18);
+    }
+
+    .pdf-icon {
+        font-size: 1em;
+        line-height: 1;
+    }
+
+    .filters-card {
+        background: #1e1f22;
+        border-radius: 1.25rem;
+        padding: 1rem 1.05rem 1.15rem;
+        color: #d2be8a;
+        max-width: 560px;
+        margin-bottom: 1.8rem;
+    }
+
+    .filters-card h2 {
+        margin: 0 0 0.9rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.25rem, 3.4vw, 1.8rem);
+        font-weight: 700;
+    }
+
+    .filter-group {
+        margin-bottom: 0.85rem;
+    }
+
+    .filter-group:last-child {
+        margin-bottom: 0;
+    }
+
+    .filter-group label {
+        display: block;
+        color: #dbc8a1;
+        margin-bottom: 0.3rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.05rem, 2.6vw, 1.35rem);
+    }
+
+    .filter-group select {
+        width: 100%;
+        height: 2.05rem;
+        border: none;
+        border-radius: 999px;
+        padding: 0 2.35rem 0 0.75rem;
+        background: #f0ebe3;
+        color: #8d7646;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1rem, 2.4vw, 1.25rem);
+        appearance: none;
+        background-image:
+            linear-gradient(45deg, transparent 50%, #8d7646 50%),
+            linear-gradient(135deg, #8d7646 50%, transparent 50%);
+        background-position:
+            calc(100% - 1.05rem) 52%,
+            calc(100% - 0.75rem) 52%;
+        background-size:
+            0.38rem 0.38rem,
+            0.38rem 0.38rem;
+        background-repeat: no-repeat;
+    }
+
+    .events-grid {
+        display: grid;
+        grid-template-columns: 1fr;
         gap: 1rem;
-        padding: 1rem 0;
-        border-bottom: 1px solid #333;
     }
-    img {
-        width: 80px;
-        height: 80px;
+
+    .event-card {
+        background: #f7f2ea;
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+
+    .event-card img {
+        width: 100%;
+        height: 165px;
         object-fit: cover;
+        display: block;
     }
-    .titre {
-        font-style: italic;
-        opacity: 0.8;
+
+    .event-content {
+        padding: 0.9rem 1rem 1.05rem;
+    }
+
+    .event-content h3 {
+        margin: 0 0 0.4rem;
+        color: #7d281b;
+        font-family: "Ag Body", serif;
+        font-size: 1.3rem;
+    }
+
+    .event-content p {
+        margin: 0.2rem 0;
+        color: #2b2722;
+        font-family: "Ag Body", serif;
+    }
+
+    .event-link {
+        display: inline-block;
+        margin-top: 0.55rem;
+        color: #8b271b;
+        text-decoration: none;
+        font-weight: 700;
+        font-family: "Ag Body", serif;
+    }
+
+    @media (min-width: 900px) {
+        .programme-page {
+            padding: 2rem 1.6rem 2.8rem;
+        }
+
+        .pdf-btn {
+            padding: 0.95rem 1.55rem;
+        }
+
+        .filters-card {
+            max-width: 640px;
+            padding: 1.25rem 1.2rem;
+        }
+
+        .events-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
     }
 </style>
