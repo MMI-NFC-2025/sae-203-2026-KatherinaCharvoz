@@ -1,11 +1,20 @@
-<nav>
+<nav aria-label="Navigation principale">
   <div class="nav-wrapper">
     <div class="logo-container">
       <a href="/" class="logo-link">
         <img src="/logo_chaussure.svg" alt="Flying Tap Fest" class="logo-img" />
       </a>
     </div>
-    <ul>
+    <button
+      type="button"
+      class="menu-toggle"
+      aria-expanded="false"
+      aria-controls="site-menu"
+    >
+      <span class="menu-toggle-label">Menu</span>
+      <span class="menu-toggle-icon" aria-hidden="true"></span>
+    </button>
+    <ul id="site-menu">
       <li><a href="/">Accueil</a></li>
       <li><a href="/apropos">Le Festival</a></li>
       <li><a href="/programme">Programme</a></li>
@@ -17,17 +26,34 @@
   </div>
 </nav>
 
+<script>
+  const nav = document.querySelector("nav");
+  const toggle = nav?.querySelector(".menu-toggle");
+  const menu = nav?.querySelector("#site-menu");
+
+  if (toggle instanceof HTMLButtonElement && menu instanceof HTMLUListElement) {
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!isOpen));
+      menu.dataset.open = String(!isOpen);
+    });
+  }
+</script>
+
 <style>
   nav {
     display: flex;
     align-items: center;
+    min-height: 72px;
   }
 
   .nav-wrapper {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    justify-content: space-between;
+    gap: 1rem;
     width: 100%;
+    padding: 0.65rem 0;
   }
 
   .logo-container {
@@ -48,11 +74,90 @@
     object-fit: contain;
   }
 
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 1px solid rgba(154, 111, 41, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.65);
+    color: #7a2018;
+    padding: 0.55rem 0.85rem;
+    cursor: pointer;
+  }
+
+  .menu-toggle-label {
+    font-family: "Ag Body", serif;
+    font-size: 0.98rem;
+  }
+
+  .menu-toggle-icon {
+    position: relative;
+    width: 1rem;
+    height: 0.75rem;
+    display: inline-block;
+  }
+
+  .menu-toggle-icon::before,
+  .menu-toggle-icon::after,
+  .menu-toggle-icon {
+    border-top: 2px solid currentColor;
+  }
+
+  .menu-toggle-icon::before,
+  .menu-toggle-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+
+  .menu-toggle-icon::before {
+    top: 0.22rem;
+  }
+
+  .menu-toggle-icon::after {
+    top: 0.44rem;
+  }
+
   nav ul {
-    display: flex;
-    gap: 1rem;
+    display: none;
+    flex-direction: column;
+    gap: 0.5rem;
     list-style: none;
-    padding: 1rem;
+    padding: 0.85rem 0 0;
     margin: 0;
+    width: 100%;
+  }
+
+  nav ul[data-open="true"] {
+    display: flex;
+  }
+
+  nav li a {
+    display: inline-flex;
+    padding: 0.35rem 0;
+    text-decoration: none;
+    color: #2b2722;
+  }
+
+  @media (min-width: 900px) {
+    .menu-toggle {
+      display: none;
+    }
+
+    .nav-wrapper {
+      gap: 2rem;
+      justify-content: flex-start;
+    }
+
+    nav ul,
+    nav ul[data-open="true"] {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+      width: auto;
+      padding: 1rem;
+    }
   }
 </style>

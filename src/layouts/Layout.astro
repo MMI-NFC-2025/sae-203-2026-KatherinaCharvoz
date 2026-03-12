@@ -7,7 +7,7 @@ import Footer from "../components/footer.astro";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -17,12 +17,16 @@ import Footer from "../components/footer.astro";
     <title>{title}</title>
   </head>
 
-  <body>
-    <header>
-      <Nav />
+  <body class="site-shell">
+    <a class="skip-link" href="#main-content">Aller au contenu</a>
+
+    <header class="site-header">
+      <div class="site-container">
+        <Nav />
+      </div>
     </header>
 
-    <main>
+    <main id="main-content" class="site-main">
       <slot />
     </main>
 
