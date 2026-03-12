@@ -1,0 +1,480 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const passes = [
+    {
+        name: "Pass 1 jour",
+        price: "25€",
+        features: [
+            "Accès à toutes les scènes",
+            "1 journée au choix",
+            "Places assises non numérotées",
+        ],
+        className: "pass-card pass-card-basic",
+    },
+    {
+        name: "Pass 2 jour",
+        price: "45€",
+        features: [
+            "Accès à toutes les scènes",
+            "Les 2 jours du festival",
+            "Accès prioritaire",
+            "goodies offert à la fin des 2 jours",
+        ],
+        className: "pass-card pass-card-highlight",
+        badge: "MEILLEURE OFFRE",
+    },
+    {
+        name: "Pass VIP",
+        price: "99€",
+        features: [
+            "Accès à toutes les scènes",
+            "Les 2 jours du festival",
+            "Accès prioritaire",
+            "goodies offert à la fin des 2 jours",
+            "Accès backstage",
+            "Meet & greet artistes",
+            "Repas du soir offert",
+        ],
+        className: "pass-card pass-card-vip",
+    },
+];
+
+const hebergements = [
+    {
+        title: "Hôtel",
+        text: "Plusieurs établissements situés à quelques minutes du site du festival.",
+    },
+    {
+        title: "Locations & gîtes :",
+        text: "disponibles dans Montbéliard et les environs.",
+    },
+    {
+        title: "Aires pour vans",
+        text: "parkings autorisés pour les véhicules aménagés, selon disponibilité municipale",
+    },
+];
+
+const accesTransport = [
+    {
+        title: "En train",
+        text: "Montbéliard est desservie par la ligne SNCF Belfort-Montbéliard TGV. Le parc est ensuite accessible en bus ou à pied selon les lignes locales.",
+    },
+    {
+        title: "En voiture",
+        text: "Accès rapide depuis : A36, sortie Montbéliard-Centre ; Belfort (20 min) ; Besançon (1 h). Des parkings sont disponibles autour du parc, en partenariat avec la municipalité.",
+        isList: true,
+        list: [
+            "A36, sortie Montbéliard-Centre.",
+            "Belfort (20 min).",
+            "Besançon (1 h).",
+        ],
+        paragraph:
+            "Des parkings sont disponibles autour du parc, en partenariat avec la municipalité.",
+    },
+    {
+        title: "Covoiturage",
+        text: "Nous encourageons les visiteurs à opter pour le covoiturage, dans la continuité des engagements éco-responsables du festival. Des espaces de dépose-minute sont prévus près de l'entrée.",
+    },
+    {
+        title: "Sur place",
+        text: "Le Parc du Près-la-Rose est un site piéton agréable, idéal pour circuler facilement entre les scènes et les espaces d'ateliers.",
+    },
+];
+
+const faqItems = [
+    {
+        question: "Peut-on acheter les billets sur place ?",
+        reponse:
+            "Oui, dans la limite des places disponibles. Nous recommandons la réservation en ligne pour garantir votre entrée.",
+    },
+    {
+        question: "Les ateliers nécessitent-ils une inscription ?",
+        reponse:
+            "Certains ateliers sont en accès libre, d'autres nécessitent une inscription préalable via la billetterie.",
+    },
+    {
+        question: "Le festival est-il adapté aux familles ?",
+        reponse:
+            "Oui, des espaces calmes et des animations adaptées sont prévus pour tous les âges.",
+    },
+    {
+        question:
+            "Peut-on venir avec son propre matériel (chaussures de claquettes) ?",
+        reponse:
+            "Oui, vous pouvez venir avec votre matériel personnel pour les ateliers et initiations dédiés.",
+    },
+    {
+        question: "Les drones sont-ils sécurisés ?",
+        reponse:
+            "L'usage des drones est encadré sur site selon la réglementation en vigueur et les zones autorisées.",
+    },
+    {
+        question:
+            "Y a-t-il des solutions pour les personnes à mobilité réduite ?",
+        reponse:
+            "Oui, des accès PMR, des zones réservées et un accompagnement dédié sont prévus pendant le festival.",
+    },
+];
+---
+
+<Layout title="Infos Pratiques">
+    <section class="infos-page">
+        <h1>
+            Infos<br />
+            Pratiques
+        </h1>
+
+        <h2>Tarifs</h2>
+
+        <div class="pass-list">
+            {
+                passes.map((pass) => (
+                    <article class={pass.className}>
+                        <h3>{pass.name}</h3>
+                        <p class="pass-price">{pass.price}</p>
+
+                        <div class="pass-features">
+                            {pass.features.map((feature) => (
+                                <p>{feature}</p>
+                            ))}
+                        </div>
+
+                        {pass.badge && <p class="pass-badge">{pass.badge}</p>}
+                    </article>
+                ))
+            }
+        </div>
+
+        <aside class="discounts">
+            <p class="discount-title">Tarif réduit (-30%) :</p>
+            <p class="discount-text">
+                Étudiant(e)s, moins de 18 ans, demandeurs d'emploi
+                <br />
+                d'emploi (sur présentation d'un justificatif)
+            </p>
+
+            <p class="discount-title">Gratuit :</p>
+            <p class="discount-text">
+                Moins de 12 ans accompagné(e)s d'un adulte
+            </p>
+        </aside>
+
+        <section class="infos-block">
+            <h2>Hébergements</h2>
+            <p class="intro-text">
+                Le festival se déroule au Parc du Près-la-Rose à Montbéliard, un
+                lieu facilement accessible et entouré de nombreuses options
+                d'hébergement :
+            </p>
+
+            <div class="info-cards">
+                {
+                    hebergements.map((item) => (
+                        <article class="info-card">
+                            <h3>{item.title}</h3>
+                            <p>{item.text}</p>
+                        </article>
+                    ))
+                }
+            </div>
+        </section>
+
+        <section class="infos-block">
+            <h2>Accès & Transport</h2>
+
+            <div class="info-cards">
+                {
+                    accesTransport.map((item) => (
+                        <article class="info-card">
+                            <h3>{item.title}</h3>
+                            {item.isList ? (
+                                <>
+                                    <p>Accès rapide depuis :</p>
+                                    <ul>
+                                        {item.list?.map((line) => (
+                                            <li>{line}</li>
+                                        ))}
+                                    </ul>
+                                    <p>{item.paragraph}</p>
+                                </>
+                            ) : (
+                                <p>{item.text}</p>
+                            )}
+                        </article>
+                    ))
+                }
+            </div>
+        </section>
+
+        <section class="infos-block faq-block">
+            <h2>FAQ</h2>
+
+            <div class="faq-list">
+                {
+                    faqItems.map((item, index) => (
+                        <details
+                            class={`faq-item ${index === 0 ? "faq-item-primary" : ""}`}
+                        >
+                            <summary>{item.question}</summary>
+                            <p>{item.reponse}</p>
+                        </details>
+                    ))
+                }
+            </div>
+        </section>
+    </section>
+</Layout>
+
+<style>
+    .infos-page {
+        max-width: 460px;
+        margin: 0 auto;
+        padding: 1rem 0.45rem 2rem;
+    }
+
+    .infos-page h1 {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: clamp(3rem, 14vw, 4.9rem);
+        line-height: 0.9;
+        color: #9a6f29;
+    }
+
+    .infos-page h2 {
+        margin: 1.05rem 0 0.7rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.8rem, 7vw, 2.35rem);
+        line-height: 1;
+        color: #7a2018;
+    }
+
+    .pass-list {
+        display: grid;
+        gap: 0.72rem;
+    }
+
+    .pass-card {
+        border-radius: 0.88rem;
+        padding: 0.72rem 0.8rem 0.85rem;
+        text-align: center;
+    }
+
+    .pass-card h3 {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: clamp(1.55rem, 6vw, 2rem);
+        line-height: 1;
+        color: #a98034;
+    }
+
+    .pass-price {
+        margin: 0.28rem 0 0.38rem;
+        font-family: "Ag Body", serif;
+        font-size: clamp(2.4rem, 9vw, 3.4rem);
+        line-height: 1;
+        color: #f4eee2;
+    }
+
+    .pass-features {
+        display: grid;
+        gap: 0.12rem;
+    }
+
+    .pass-features p {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: clamp(0.95rem, 3.1vw, 1.15rem);
+        line-height: 1.22;
+    }
+
+    .pass-card-basic {
+        background: #202125;
+    }
+
+    .pass-card-basic .pass-features p {
+        color: #f5eee1;
+    }
+
+    .pass-card-highlight {
+        background: linear-gradient(180deg, #8d2419 0%, #a87728 100%);
+    }
+
+    .pass-card-highlight .pass-features p {
+        color: #f7efe2;
+    }
+
+    .pass-card-vip {
+        background: #e4dfd5;
+        border: 2px solid #8d2419;
+    }
+
+    .pass-card-vip .pass-price,
+    .pass-card-vip .pass-features p {
+        color: #1d1e22;
+    }
+
+    .pass-badge {
+        width: fit-content;
+        margin: 0.72rem auto 0;
+        padding: 0.38rem 0.92rem;
+        border-radius: 999px;
+        background: #f2eee5;
+        font-family: "Ag Body", serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        line-height: 1;
+        color: #a26e2c;
+    }
+
+    .discounts {
+        margin-top: 0.7rem;
+        background: #202125;
+        border-radius: 0.24rem;
+        padding: 0.62rem 0.52rem 0.72rem;
+    }
+
+    .discount-title {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: 1rem;
+        font-weight: 700;
+        color: #9a6f29;
+    }
+
+    .discount-text {
+        margin: 0.08rem 0 0.4rem;
+        font-family: "Ag Body", serif;
+        font-size: 0.84rem;
+        line-height: 1.3;
+        color: #d8d3ca;
+    }
+
+    .discounts .discount-text:last-child {
+        margin-bottom: 0;
+    }
+
+    .infos-block {
+        margin-top: 1.6rem;
+    }
+
+    .intro-text {
+        margin: 0 0 0.7rem;
+        font-family: "Ag Body", serif;
+        font-size: 1.03rem;
+        line-height: 1.35;
+        color: #2b2520;
+    }
+
+    .info-cards {
+        display: grid;
+        gap: 0.68rem;
+    }
+
+    .info-card {
+        background: #d3cec4;
+        border-radius: 0.82rem;
+        padding: 0.65rem 0.72rem;
+    }
+
+    .info-card h3 {
+        margin: 0 0 0.35rem;
+        font-family: "Ag Body", serif;
+        font-size: 1.08rem;
+        line-height: 1.1;
+        color: #9a6f29;
+    }
+
+    .info-card p,
+    .info-card li {
+        margin: 0;
+        font-family: "Ag Body", serif;
+        font-size: 0.96rem;
+        line-height: 1.3;
+        color: #3a352e;
+    }
+
+    .info-card ul {
+        margin: 0.2rem 0 0.45rem;
+        padding-left: 1.1rem;
+    }
+
+    .faq-block {
+        margin-top: 1.7rem;
+    }
+
+    .faq-list {
+        display: grid;
+        gap: 0.52rem;
+    }
+
+    .faq-item {
+        background: #202125;
+        border: 1px solid #9b742f;
+    }
+
+    .faq-item-primary {
+        border-color: #8d2419;
+    }
+
+    .faq-item summary {
+        position: relative;
+        list-style: none;
+        padding: 0.82rem 2rem 0.82rem 0.72rem;
+        font-family: "Ag Body", serif;
+        font-size: 1.03rem;
+        line-height: 1.2;
+        color: #f1e8d9;
+        cursor: pointer;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .faq-item summary::after {
+        content: "⌄";
+        position: absolute;
+        right: 0.72rem;
+        top: 50%;
+        transform: translateY(-52%);
+        font-size: 1rem;
+        line-height: 1;
+        color: #9b742f;
+    }
+
+    .faq-item[open] summary::after {
+        content: "⌃";
+    }
+
+    .faq-item p {
+        margin: 0;
+        padding: 0 0.72rem 0.85rem;
+        font-family: "Ag Body", serif;
+        font-size: 0.96rem;
+        line-height: 1.3;
+        color: #d7d0c2;
+    }
+
+    @media (min-width: 900px) {
+        .infos-page {
+            max-width: 1080px;
+            padding: 1.5rem 1.2rem 2.8rem;
+        }
+
+        .pass-list {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            align-items: stretch;
+        }
+
+        .pass-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .info-cards {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

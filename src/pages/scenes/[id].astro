@@ -35,6 +35,15 @@ type ScheduledArtist = {
     timeLabel: string;
 };
 
+const sceneArtistOrder: Record<string, string[]> = {
+    "grande scene": [
+        "x9be9qq8r4wrgml",
+        "5ddozlisgqo03jc",
+        "bw4hcnx9yz81hra",
+        "nm8abdkh6pknuw6",
+    ],
+};
+
 function normalizeSceneName(sceneName: string) {
     return (sceneName || "")
         .normalize("NFD")
@@ -47,20 +56,6 @@ function slugifySceneName(sceneName: string) {
     return normalizeSceneName(sceneName)
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-|-$/g, "");
-}
-
-function getSceneDescription(sceneName: string) {
-    const normalizedName = normalizeSceneName(sceneName);
-
-    if (normalizedName.includes("grande")) {
-        return "La scène principale accueille les performances les plus attendues du festival dans une ambiance ample et spectaculaire.";
-    }
-
-    if (normalizedName.includes("decouverte")) {
-        return "Une scène plus intime dédiée aux révélations, aux formats surprenants et aux rencontres artistiques.";
-    }
-
-    return "Une scène pensée pour mettre les artistes et le public au plus près du rythme.";
 }
 
 function getSceneSubtitle(sceneName: string) {
@@ -99,9 +94,9 @@ function formatDayLabel(value: string | number | Date | undefined) {
     }
 
     return new Intl.DateTimeFormat("fr-FR", {
-        weekday: "long",
         day: "2-digit",
         month: "long",
+        year: "numeric",
     }).format(date);
 }
 
@@ -180,6 +175,27 @@ const artists = (allArtists as ArtistRecord[]).filter(
         normalizedCurrentScene,
 );
 
+const preferredArtistIds = sceneArtistOrder[normalizedCurrentScene] || [];
+
+artists.sort((leftArtist, rightArtist) => {
+    const leftIndex = preferredArtistIds.indexOf(leftArtist.id);
+    const rightIndex = preferredArtistIds.indexOf(rightArtist.id);
+
+    if (leftIndex === -1 && rightIndex === -1) {
+        return 0;
+    }
+
+    if (leftIndex === -1) {
+        return 1;
+    }
+
+    if (rightIndex === -1) {
+        return -1;
+    }
+
+    return leftIndex - rightIndex;
+});
+
 const sceneWithImage = sceneSlots.find((scene) => scene.image_scene);
 
 const heroImage = sceneWithImage?.image_scene
@@ -218,9 +234,6 @@ const groupedArtists = Array.from(
             <div class="scene-hero-copy">
                 <h1>{sceneName}</h1>
                 <p class="scene-subtitle">{getSceneSubtitle(sceneName)}</p>
-                <p class="scene-description">
-                    {getSceneDescription(sceneName)}
-                </p>
             </div>
 
             <img src={heroImage} alt={sceneName} loading="eager" />
@@ -267,8 +280,14 @@ const groupedArtists = Array.from(
                                                 {artistType}
                                             </p>
                                             <div class="artist-meta">
-                                                <span>{timeLabel}</span>
-                                                <span>{dateLabel}</span>
+                                                <span>
+                                                    <strong>Horaire :</strong>{" "}
+                                                    {timeLabel}
+                                                </span>
+                                                <span>
+                                                    <strong>Date :</strong>{" "}
+                                                    {dateLabel}
+                                                </span>
                                             </div>
                                         </div>
                                     </a>
@@ -313,19 +332,10 @@ const groupedArtists = Array.from(
     }
 
     .scene-subtitle {
-        margin: 0 0 0.4rem;
+        margin: 0;
         font-family: "Ag Body", serif;
         font-size: clamp(1.3rem, 4.4vw, 2rem);
         color: #7d2018;
-    }
-
-    .scene-description {
-        max-width: 42rem;
-        margin: 0;
-        font-family: "Ag Body", serif;
-        font-size: 1.05rem;
-        line-height: 1.45;
-        color: #3f3028;
     }
 
     .scene-hero img {
@@ -350,7 +360,7 @@ const groupedArtists = Array.from(
     .day-group h3 {
         margin: 0 0 0.6rem;
         font-family: "Ag Body", serif;
-        font-size: clamp(1.2rem, 4vw, 1.8rem);
+        font-size: clamp(1rem, 3.5vw, 1.4rem);
         color: #7a2018;
         text-transform: capitalize;
     }
@@ -403,12 +413,16 @@ const groupedArtists = Array.from(
     }
 
     .artist-meta {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem 0.9rem;
+        display: grid;
+        gap: 0.12rem;
         font-family: "Ag Body", serif;
         font-size: 0.98rem;
         color: #c77f34;
+    }
+
+    .artist-meta strong {
+        color: #7d2018;
+        font-weight: 700;
     }
 
     @media (min-width: 900px) {
